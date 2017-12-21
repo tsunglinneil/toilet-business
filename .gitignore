@@ -1,4 +1,5 @@
 .idea/
 *.iml
 env/
-*/__pycache__
+toilet_business/__pycache__/
+toilet_business/views/__pycache__/
