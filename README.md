@@ -13,7 +13,7 @@ The future
 >>$ pip3 install -r requirement.txt
 * run main program called app.py to start local development server
 >>$ python3 app.py
-* open browser 127.0.0.1:5000/
+* open browser http://127.0.0.1:5000/
 
 ### Folder Description:
 #### Here are using packages and blueprints for application, and this is call Application Factories
