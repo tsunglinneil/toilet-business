@@ -2,10 +2,17 @@
 The future
 
 ### Developer Tips:
-* clone repository or download zip file 
+* clone repository or download zip file directly
+>>$ git clone url(git's url)
 * create virtualenv in the root(here is called toilet_business) folder
-* install requirement.txt on virtual environment
+>>$ cd ..... (go into the root folder)  
+>>$ virtualenv env
+* activate virtual env
+>>$ source env/bin/activate
+* install requirement.txt on virtual environment (pip3 install -r requirement.txt)
+>>$ pip3 install -r requirement.txt
 * run main program called app.py to start local development server
+>>$ python3 app.py
 * open browser 127.0.0.1:5000/
 
 ### Folder Description:
