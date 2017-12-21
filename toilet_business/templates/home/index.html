@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Toilet Business</title>
-</head>
-<body>
+{# Use flask bootstrap base.html template inheritance #}
+{% extends "bootstrap/base.html"  %}
 
-</body>
-</html>
+{% block content %}
+<div class="container col-md-8 col-md-offset-2">
+    <h1>Site Under Construction</h1>
+    <img src="{{url_for('static', filename='icon/toilet_icon2.jpg')}}" class="img-rounded" alt="Cinque Terre" width="45%" hight="500px"/>
+</div>
+{%- endblock %}
+
