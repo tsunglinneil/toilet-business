@@ -29,6 +29,13 @@ def flaskmap():
 @map_blueprint.route('/flaskajax', methods=['POST'])
 def flaskajax():
     json = request.get_json()
-    first_name = json['first_name']
-    last_name = json['last_name']
-    return jsonify(first_name=first_name, last_name=last_name)
+    latitude = json['latitude']
+    longitude = json['longitude']
+    print("Now position is {},{}".format(latitude, longitude))
+
+    # Test Data
+    resultList = [{"position": "{}".format("25.056334,121.543894"), "title": "post office"},
+                  {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
+                  {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
+
+    return jsonify(resultList=resultList)

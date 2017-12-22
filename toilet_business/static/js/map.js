@@ -4,7 +4,6 @@ var taipei = new google.maps.LatLng(25.048069, 121.517101); //init position：Tai
 
 $(function() {
     initMap();
-    markerPosition();
 });
 
 //init map ver00
@@ -22,11 +21,12 @@ function initMap(){
         navigator.geolocation.getCurrentPosition(function(position) {
             start = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
             setStartPoint(start);
+            markerPosition(position.coords.latitude, position.coords.longitude)
 
             // test mark multiple location
-            addMarker("25.056334,121.543894", "post office");  //（latitude,longitude）
-            addMarker("25.055705,121.543832", "cafe");         //（latitude,longitude）
-            addMarker("25.055191,121.545222", "park");         //（latitude,longitude）
+            // addMarker("25.056334,121.543894", "post office");  //（latitude,longitude）
+            // addMarker("25.055705,121.543832", "cafe");         //（latitude,longitude）
+            // addMarker("25.055191,121.545222", "park");         //（latitude,longitude）
         }, function errorCallback(error) {
             var errorTypes={
                 0:"不明原因錯誤",
@@ -72,8 +72,8 @@ function addMarker(data, title){ // data(latitude,longitude)
 }
 
 //Ajax
-function markerPosition(){
-    var data = {"first_name":"Toilet", "last_name":"Business"};
+function markerPosition(latitude, longitude){
+    var data = {"latitude":latitude, "longitude":longitude};
 
     $.ajax({
         type: 'POST',
@@ -82,7 +82,12 @@ function markerPosition(){
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(data),
         success: function(callback) {
-            console.log('Hello ' + callback.first_name + ' ' + callback.last_name  + '!');
+            callback.resultList.forEach(function myFunction(item, index) {
+                var position = item.position
+                var title = item.title
+                console.log(position +" ; "+title)
+                addMarker(position, title);  //（position, title）
+            });
         },
         error: function() {
             console.log("error!");
