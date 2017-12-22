@@ -1,81 +1,22 @@
 {# Use flask bootstrap base.html template inheritance #}
 {% extends "bootstrap/base.html"  %}
 
-{% block content %}
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-</head>
-<script type="text/javascript" src="{{url_for('static', filename='js/lib/jquery-3.2.1.min.js') }}"></script>
+{% block title %} Toilet Map - Js Api {% endblock %}
+
+{% block metas %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% endblock metas %}
+
+{% block styles %}
+<link href="{{url_for('static', filename='css/map.css')}}" rel="stylesheet">
+{% endblock styles %}
+
+{% block scripts %}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnJzJWFZEawx6AwTJiALRWa6MB0aLsvN8"></script>
-<style type="text/css">
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
+<script type="text/javascript" src="{{url_for('static', filename='js/lib/jquery-3.2.1.min.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/map.js') }}"></script>
+{% endblock scripts %}
 
-    #map {
-        height: 50%;
-        width: 50%
-    }
-</style>
-<script>
-    //宣告變數區
-    var map; //用於宣告一個Google Map Object
-    var taipei = new google.maps.LatLng(25.048069, 121.517101); //初始定位：台北車站
-    var lat = 25.025986;
-    var lng = 121.549306;
-    var point = lat+","+lng;
-
-    $(function() {
-        initMap();
-    });
-
-    //初始化地圖ver00
-    function initMap(){
-        //地圖設定
-        var mapOptions = {
-            center: {lat: 24.052181, lng: 121.088073}, //起始中心點{lat:經度, lng:緯度} (注意經緯度必須要是數值，不可放字串) 建立時的中心位置定為台灣正中心
-            zoom: 15
-        };
-        //初始化地圖
-        map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        //定位目前位置(先關閉)
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(function(position) {
-                start = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-                setStartPoint(start);
-            }, function errorCallback(error) {
-                var errorTypes={
-                    0:"不明原因錯誤",
-                    1:"使用者拒絕提供位置資訊",
-                    2:"無法取得位置資訊",
-                    3:"位置查詢逾時"
-                };
-                alert(errorTypes[error.code]);
-                //alert(error.message);  //測試時用
-            });
-        }else{
-            alert("你的瀏覽器不支援地理定位");
-            start = taipei;
-            setStartPoint(start);
-        }
-
-    }
-
-    //初始化地圖ver01 - 設定起始點
-    function setStartPoint(point) {
-        map.setCenter(point);
-        //起點Marker
-        startMarker = new google.maps.Marker({
-            icon : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            position : point,
-            title : "您的位置",
-            map : map
-        });
-    }
-</script>
-
+{% block content %}
 <div id="map"></div>
 {% endblock %}

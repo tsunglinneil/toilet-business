@@ -1,0 +1,8 @@
+{# Use flask bootstrap base.html template inheritance #}
+{% extends "bootstrap/base.html"  %}
+
+{% block title %} Toilet Map - Flask Map {% endblock %}
+
+{% block content %}
+{{googlemap("my_awesome_map", lat=25.048069, lng=121.517101, markers=[(25.048069, 121.517101)])}}
+{% endblock %}

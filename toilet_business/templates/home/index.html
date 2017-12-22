@@ -1,6 +1,8 @@
 {# Use flask bootstrap base.html template inheritance #}
 {% extends "bootstrap/base.html"  %}
 
+{% block title %} Toilet Business {% endblock %}
+
 {% block content %}
 <div class="container col-md-8 col-md-offset-2">
     <h1>Site Under Construction</h1>
@@ -8,6 +10,9 @@
     <img src="{{url_for('static', filename='icon/toilet_icon2.jpg')}}" class="img-rounded" alt="Cinque Terre" width="45%" hight="500px"/>
     <form action="{{ url_for('home.map') }}" method="POST">
         <input class="btn btn-primary" type="submit" value="Position Location">
+    </form>
+    <form action="{{ url_for('home.flaskmap') }}" method="POST">
+        <input class="btn btn-primary" type="submit" value="Position Location - Flask Map">
     </form>
 </div>
 {% endblock %}

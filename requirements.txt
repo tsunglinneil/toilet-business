@@ -3,5 +3,6 @@ requests
 flask
 flask-bootstrap
 flask-wtf
+flask_googlemaps
 leveldb
 gunicorn
