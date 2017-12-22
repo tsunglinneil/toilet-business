@@ -8,10 +8,10 @@
     <h1>Site Under Construction</h1>
 
     <img src="{{url_for('static', filename='icon/toilet_icon2.jpg')}}" class="img-rounded" alt="Cinque Terre" width="45%" hight="500px"/>
-    <form action="{{ url_for('home.map') }}" method="POST">
+    <form action="{{ url_for('map.map') }}" method="POST">
         <input class="btn btn-primary" type="submit" value="Position Location">
     </form>
-    <form action="{{ url_for('home.flaskmap') }}" method="POST">
+    <form action="{{ url_for('map.flaskmap') }}" method="POST">
         <input class="btn btn-primary" type="submit" value="Position Location - Flask Map">
     </form>
 </div>

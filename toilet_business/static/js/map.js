@@ -1,12 +1,10 @@
 //Declare
 var map; //Google Map Object
 var taipei = new google.maps.LatLng(25.048069, 121.517101); //init position¡GTaipei station
-var lat = 25.025986;
-var lng = 121.549306;
-var point = lat+","+lng;
 
 $(function() {
     initMap();
+    markerPosition();
 });
 
 //init map ver00
@@ -17,7 +15,7 @@ function initMap(){
         zoom: 15
     };
     //initial map
-    map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    map = new google.maps.Map($("#map")[0], mapOptions);
 
     //geolocation current position
     if(navigator.geolocation){
@@ -71,4 +69,23 @@ function addMarker(data, title){ // data(latitude,longitude)
         title : title
     });
     map.setCenter(myLatLng);
+}
+
+//Ajax
+function markerPosition(){
+    var data = {"first_name":"Toilet", "last_name":"Business"};
+
+    $.ajax({
+        type: 'POST',
+        url: '/map/flaskajax',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        success: function(callback) {
+            console.log('Hello ' + callback.first_name + ' ' + callback.last_name  + '!');
+        },
+        error: function() {
+            console.log("error!");
+        }
+    });
 }
