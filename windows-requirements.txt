@@ -1,0 +1,8 @@
+bs4
+requests
+flask
+flask-bootstrap
+flask-wtf
+flask_googlemaps
+gunicorn
+geopy

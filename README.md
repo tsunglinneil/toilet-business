@@ -2,18 +2,22 @@
 The future
 
 ### Developer Tips:
-* clone repository or download zip file directly
+* Clone repository or download zip file directly
 >>$ git clone url(git's url)
-* create virtualenv in the root(here is called toilet_business) folder
+* Create virtualenv in the root(here is called toilet_business) folder
 >>$ cd ..... (go into the root folder)  
 >>$ virtualenv env
-* activate virtual env
+* Activate virtual env
 >>$ source env/bin/activate
-* install requirement.txt on virtual environment (pip3 install -r requirement.txt)
+* Install requirement.txt on virtual environment (pip3 install -r requirement.txt) (for mac os)
+  if your os is windows, see skip this and forward to the next step.
 >>$ pip3 install -r requirement.txt
-* run main program called app.py to start local development server
+* Because of leveldb cannot be install with pip on windows, so copy the leveldb.pyd (doc folder) into YOUR_PYTHON_ROOT/Lib/site-packages,
+  here we recommend to use virtual environment, so copy into YOUR_PYTHON_ROOT/env/Lib/site-packages and run commend:
+>> pip install -r windows-requirement.txt
+* Run main program called app.py to start local development server
 >>$ python3 app.py
-* open browser http://127.0.0.1:5000/
+* Open browser http://127.0.0.1:5000/
 
 ### Folder Description:
 #### Here are using packages and blueprints for application, and this is call Application Factories
