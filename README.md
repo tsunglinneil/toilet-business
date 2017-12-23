@@ -4,14 +4,16 @@ The future
 ### Developer Tips:
 * Clone repository or download zip file directly
 >>$ git clone url(git's url)
+* Install virtual environment
+>> pip install virtualenv
 * Create virtualenv in the root(here is called toilet_business) folder
 >>$ cd ..... (go into the root folder)  
 >>$ virtualenv env
 * Activate virtual env
->>$ source env/bin/activate (mac os)
+>>$ source env/bin/activate (mac os)  
 >>$ env\Scripts\activate (windows)
 * Install requirement.txt on virtual environment (pip3 install -r requirement.txt) (for mac os)
-  if your os is windows, see skip this and forward to the next step.
+  if your os is windows, skip this step and forward to the next step.
 >>$ pip3 install -r requirement.txt
 * Because of leveldb cannot be install with pip on windows, so copy the leveldb.pyd (doc folder) into YOUR_PYTHON_ROOT/Lib/site-packages,
   here we recommend to use virtual environment, so copy into YOUR_PYTHON_ROOT/env/Lib/site-packages and run commend:
