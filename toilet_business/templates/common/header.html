@@ -1,0 +1,10 @@
+{# Use flask bootstrap base.html template inheritance #}
+{% extends "bootstrap/base.html"  %}
+
+{% block metas %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% endblock metas %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/lib/jquery-3.2.1.min.js') }}"></script>
+{% endblock scripts %}

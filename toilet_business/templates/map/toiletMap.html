@@ -3,9 +3,7 @@
 
 {% block title %} Toilet Map - JS API {% endblock %}
 
-{% block metas %}
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-{% endblock metas %}
+{% include '/common/header.html' %}
 
 {% block styles %}
 <link href="{{url_for('static', filename='css/map.css')}}" rel="stylesheet">
@@ -13,16 +11,17 @@
 
 {% block scripts %}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnJzJWFZEawx6AwTJiALRWa6MB0aLsvN8"></script>
-<script type="text/javascript" src="{{url_for('static', filename='js/lib/jquery-3.2.1.min.js') }}"></script>
-<script type="text/javascript" src="{{url_for('static', filename='js/map.js') }}"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/map/map.js') }}"></script>
 {% endblock scripts %}
 
 {% block content %}
 <div>
     <input type="text" id="address" class="form-control" placeholder="Please enter area or street ..." />
-    <input class="btn btn-primary" id="search" type="button" value="Search">
+    <input class="btn btn-primary" id="specificSearch" type="button" value="Search"/>
 </div>
+
 <div id="map"></div>
+
 <form action="{{ url_for('map.map') }}" method="POST">
     <input class="btn btn-primary" type="submit" value="Position Location">
 </form>

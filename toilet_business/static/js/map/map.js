@@ -5,15 +5,16 @@ var taipei = new google.maps.LatLng(25.048069, 121.517101); //init position¡GTai
 $(function() {
     initMap();
 
-    $("#search").click(function () {
-        console.log("!!!!");
+    $("#address").keyup(function(event) {
+        if (event.keyCode === 13) {
+            $("#specificSearch").click();
+        }
+    });
+
+    $("#specificSearch").click(function () {
         var geocoder = new google.maps.Geocoder();
         geocodeAddress(geocoder, map);
     });
-
-    // $("#search").click(function() {
-    //     alert( "Handler for .click() called." );
-    // });
 });
 
 //init map ver00

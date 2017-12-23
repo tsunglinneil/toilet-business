@@ -3,13 +3,15 @@
 
 {% block title %} Toilet Business {% endblock %}
 
-{% block metas %}
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-{% endblock metas %}
+{% include '/common/header.html' %}
 
 {% block styles %}
 <link href="{{url_for('static', filename='css/sass.css')}}" rel="stylesheet">
 {% endblock styles %}
+
+{% block scripts %}
+<script type="text/javascript" src="{{url_for('static', filename='js/home/home.js') }}"></script>
+{% endblock scripts %}
 
 {% block content %}
 <div class="header">
@@ -17,7 +19,7 @@
         <h1>TOILET</h1>
     </div><img class="icon" src="https://i.imgur.com/SV2lyg1.png"/>
 </div>
-<form action="{{ url_for('map.map') }}" method="POST">
+<form id="form" action="{{ url_for('map.map') }}" method="POST">
     <div class="content">
         <div class="maxwidth">
             <h2>Slogan</h2>
@@ -26,7 +28,7 @@
             <guideline>Toilet Spot</guideline><br/>
             <hr color="#A9E5BB"/><img class="pic" src="https://i.imgur.com/ENiAKsF.png"/>
             <h4>Function</h4>
-            <input class="button button_jasper" type="submit" value="Search Location">
+            <div class="button button_jasper" id="currentSearch">Search Location</div>
             <h5>Toliet&nbsp;B&nbsp;.inc</h5>
         </div>
     </div>
