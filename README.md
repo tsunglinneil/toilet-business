@@ -8,7 +8,8 @@ The future
 >>$ cd ..... (go into the root folder)  
 >>$ virtualenv env
 * Activate virtual env
->>$ source env/bin/activate
+>>$ source env/bin/activate (mac os)
+>>$ env\Scripts\activate (windows)
 * Install requirement.txt on virtual environment (pip3 install -r requirement.txt) (for mac os)
   if your os is windows, see skip this and forward to the next step.
 >>$ pip3 install -r requirement.txt
