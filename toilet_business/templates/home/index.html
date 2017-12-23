@@ -3,16 +3,32 @@
 
 {% block title %} Toilet Business {% endblock %}
 
-{% block content %}
-<div class="container col-md-8 col-md-offset-2">
-    <h1>Site Under Construction</h1>
+{% block metas %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+{% endblock metas %}
 
-    <img src="{{url_for('static', filename='icon/toilet_icon2.jpg')}}" class="img-rounded" alt="Cinque Terre" width="45%" hight="500px"/>
-    <form action="{{ url_for('map.map') }}" method="POST">
-        <input class="btn btn-primary" type="submit" value="Position Location">
-    </form>
-    <form action="{{ url_for('map.flaskmap') }}" method="POST">
-        <input class="btn btn-primary" type="submit" value="Position Location - Flask Map">
-    </form>
+{% block styles %}
+<link href="{{url_for('static', filename='css/sass.css')}}" rel="stylesheet">
+{% endblock styles %}
+
+{% block content %}
+<div class="header">
+    <div class="maxwidth">
+        <h1>TOILET</h1>
+    </div><img class="icon" src="https://i.imgur.com/SV2lyg1.png"/>
 </div>
+<form action="{{ url_for('map.map') }}" method="POST">
+    <div class="content">
+        <div class="maxwidth">
+            <h2>Slogan</h2>
+            <h3>Toilet Business</h3>
+            <div class="titlehr"></div><br/>
+            <guideline>Toilet Spot</guideline><br/>
+            <hr color="#A9E5BB"/><img class="pic" src="https://i.imgur.com/ENiAKsF.png"/>
+            <h4>Function</h4>
+            <input class="button button_jasper" type="submit" value="Search Location">
+            <h5>Toliet&nbsp;B&nbsp;.inc</h5>
+        </div>
+    </div>
+</form>
 {% endblock %}

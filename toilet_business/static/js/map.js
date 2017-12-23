@@ -4,6 +4,16 @@ var taipei = new google.maps.LatLng(25.048069, 121.517101); //init position：Tai
 
 $(function() {
     initMap();
+
+    $("#search").click(function () {
+        console.log("!!!!");
+        var geocoder = new google.maps.Geocoder();
+        geocodeAddress(geocoder, map);
+    });
+
+    // $("#search").click(function() {
+    //     alert( "Handler for .click() called." );
+    // });
 });
 
 //init map ver00
@@ -62,7 +72,7 @@ function addMarker(data, title){ // data(latitude,longitude)
     var L1 = str[0]; //latitude
     var L2 = str[1]; //longitude
     var myLatLng = {lat: parseFloat(L1), lng: parseFloat(L2)}; //{lat:latitude, lng:longitude}
-    console.log(myLatLng);
+    // console.log(myLatLng);
     var marker = new google.maps.Marker({
         position : myLatLng,
         map : map,
@@ -91,6 +101,40 @@ function markerPosition(latitude, longitude){
         },
         error: function() {
             console.log("error!");
+        }
+    });
+}
+
+/*
+    1. search place by address and mark on the map
+    2. get new place's latitude and longitude
+    3. marker position and get around place by ajax function
+*/
+function geocodeAddress(geocoder, resultsMap) {
+    var address = document.getElementById('address').value;
+    var mapOptions = {
+        center: {lat: 24.052181, lng: 121.088073}, //Start Center{lat:經度, lng:緯度} (注意經緯度必須要是數值，不可放字串)
+        zoom: 15
+    };
+    //initial map
+    map = new google.maps.Map($("#map")[0], mapOptions);
+
+    geocoder.geocode({'address': address}, function (results, status) {
+        if (status === 'OK') {
+            // console.log(results[0].geometry.location.lat());
+            // console.log(results[0].geometry.location.lng());
+
+            //get address location data
+            latitude = results[0].geometry.location.lat();
+            longitude = results[0].geometry.location.lng();
+
+            //marker the new start point
+            setStartPoint(results[0].geometry.location)
+
+            //marker position and get around place by ajax function
+            markerPosition(latitude, longitude);
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
         }
     });
 }

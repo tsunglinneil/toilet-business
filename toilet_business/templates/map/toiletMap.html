@@ -18,5 +18,12 @@
 {% endblock scripts %}
 
 {% block content %}
+<div>
+    <input type="text" id="address" class="form-control" placeholder="Please enter area or street ..." />
+    <input class="btn btn-primary" id="search" type="button" value="Search">
+</div>
 <div id="map"></div>
+<form action="{{ url_for('map.map') }}" method="POST">
+    <input class="btn btn-primary" type="submit" value="Position Location">
+</form>
 {% endblock %}

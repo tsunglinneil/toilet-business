@@ -1,0 +1,95 @@
+html, body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.header {
+  height: 200px;
+  background-color: #A9E5BB;
+}
+
+.icon {
+  width: 100px;
+  height: 100px;
+  margin-top: 55px;
+  margin-left: 80px;
+}
+
+* {
+  position: relative;
+  font-family: Fira Sans, Microsoft Jhenghei;
+}
+
+.maxwidth {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.maxwidth h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 60px;
+  letter-spacing: 75px;
+  color: #FCF6B1;
+}
+
+.content {
+  padding: 50px;
+  letter-spacing: 1px;
+  background-color: #363537;
+  color: #FCF6B1;
+}
+.content h2 {
+  font-size: 40px;
+  line-height: 28px;
+  letter-spacing: 1.5px;
+}
+.content h3 {
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 2px;
+  color: #A9E5BB;
+}
+.content .titlehr {
+  width: 90px;
+  border-bottom: solid 5px;
+}
+.content .pic {
+  width: 600px;
+  height: 400px;
+  margin-top: 30px;
+  margin-left: 10%;
+}
+.content h4 {
+  font-size: 20px;
+  line-height: 20px;
+  letter-spacing: 2px;
+  color: #A9E5BB;
+}
+.content h5 {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #FCF6B1;
+  margin-top: 50px;
+  margin-left: 670px;
+}
+
+.button {
+  display: inline-block;
+  border: solid 1px none;
+  padding: 5px 25px;
+  margin-right: 10px;
+  letter-spacing: 1.5px;
+  font-size: 15px;
+}
+
+.button_jasper {
+  background-color: #DB3A3E;
+  color: #FCF6B1;
+}
