@@ -22,7 +22,13 @@
 
 <div id="map"></div>
 
-<form action="{{ url_for('map.map') }}" method="POST">
-    <input class="btn btn-primary" type="submit" value="Position Location">
+<form id="form" action="{{ url_for('map.map') }}" method="POST">
+    <table>
+        <tr>
+            <td><div class="btn btn-primary" id="currentSearch">Current Location</div></td>
+            <td><div class="btn btn-primary" id="home">Home</div></td>
+        </tr>
+    </table>
+
 </form>
 {% endblock %}

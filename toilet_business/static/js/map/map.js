@@ -15,6 +15,20 @@ $(function() {
         var geocoder = new google.maps.Geocoder();
         geocodeAddress(geocoder, map);
     });
+
+    $("#currentSearch").click(function () {
+        var form = $("#form");
+        form.attr("action", "/map/")
+        form.attr("method", "POST")
+        form.submit();
+    });
+
+    $("#home").click(function () {
+        var form = $("#form");
+        form.attr("action", "/")
+        form.attr("method", "GET")
+        form.submit();
+    });
 });
 
 //init map ver00
