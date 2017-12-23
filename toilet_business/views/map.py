@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from geopy.distance import vincenty
+from toilet_business import file_util
 
 # About geopy:
 # geopy makes it easy for Python developers to locate the coordinates of addresses, cities, countries,
@@ -12,12 +12,6 @@ map_blueprint = Blueprint('map', __name__, url_prefix='/map')
 
 @map_blueprint.route('/', methods=['POST'])
 def map():
-    # Calculate coordinate distance
-    # Geopy can calculate geodesic distance between two points using the Vincenty distance or great-circle distance formulas
-    newport_ri = (25.056334,121.543894)
-    cleveland_oh = (25.055705,121.543832)
-    print(vincenty(newport_ri, cleveland_oh).meters)
-
     return render_template('map/toiletMap.html')
 
 
@@ -29,13 +23,15 @@ def flaskmap():
 @map_blueprint.route('/flaskajax', methods=['POST'])
 def flaskajax():
     json = request.get_json()
-    latitude = json['latitude']
-    longitude = json['longitude']
-    print("Now position is {},{}".format(latitude, longitude))
+    current_lat = json['latitude']
+    current_long = json['longitude']
+    print("Now position is {},{}".format(current_lat, current_long))
 
     # Test Data
-    resultList = [{"position": "{}".format("25.056334,121.543894"), "title": "post office"},
-                  {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
-                  {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
+    # result_list = [{"position": "{}".format("25.056334,121.543894"), "title": "post office"},
+    #               {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
+    #               {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
 
-    return jsonify(resultList=resultList)
+    result_list = file_util.get_data(current_lat, current_long)
+
+    return jsonify(resultList=result_list)
