@@ -22,6 +22,22 @@ The future
 >>$ python3 app.py
 * Open browser http://127.0.0.1:5000/
 
+### Git Tips:
+* Recommend checkout into the branch (develop)
+>> git checkout develop
+* See now branch state
+>> git status
+
+    On branch develop
+    nothing to commit, working directory clean
+* commit your modify
+>> git commit -m 'something about this commit'
+* check remote repository
+>> git remote -v
+* push your modify (we are in the develop branch)
+  -u commend is setting the upstream, and you can just use 'git push' next time.
+>> git push -u origin develop
+
 ### Folder Description:
 #### Here are using packages and blueprints for application, and this is call Application Factories
     (root folder)
