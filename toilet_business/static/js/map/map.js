@@ -74,7 +74,7 @@ function setStartPoint(point) {
     map.setCenter(point);
     //Start Marker
     startMarker = new google.maps.Marker({
-        icon : 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        icon : 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
         position : point,
         title : "±zªº¦ì¸m",
         map : map
