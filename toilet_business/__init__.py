@@ -22,6 +22,8 @@ def create_app():
     # Map Page
     app.register_blueprint(map_blueprint)
 
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+
     # Initialize the extension and register
     GoogleMaps(app, key="AIzaSyCnJzJWFZEawx6AwTJiALRWa6MB0aLsvN8")
 

@@ -18,15 +18,15 @@ $(function() {
 
     $("#currentSearch").click(function () {
         var form = $("#form");
-        form.attr("action", "/map/")
-        form.attr("method", "POST")
+        form.attr("action", "/map/");
+        form.attr("method", "POST");
         form.submit();
     });
 
     $("#home").click(function () {
         var form = $("#form");
-        form.attr("action", "/")
-        form.attr("method", "GET")
+        form.attr("action", "/");
+        form.attr("method", "POST");
         form.submit();
     });
 });
