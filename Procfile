@@ -1,1 +1,1 @@
-web: gunicorn toilet_business.wsgi --log-file -
+web gunicorn app:app
