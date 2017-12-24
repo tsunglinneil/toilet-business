@@ -1,9 +1,13 @@
+# 台北市公廁資訊 : http://www.dep-in.gov.taipei/epb/webservice/toilet.asmx/GetToiletData
 from xml.etree import ElementTree as ET
 from geopy.distance import vincenty
-# 台北市公廁資訊 : http://www.dep-in.gov.taipei/epb/webservice/toilet.asmx/GetToiletData
+import os
+
+this_folder = os.path.dirname(os.path.abspath(__file__))
+my_file = os.path.join("{}/static".format(this_folder), 'TaipeiPublicToilet.xml')
 
 def get_data(current_lat, current_long):
-    taipei_tree = ET.parse("./static/TaipeiPublicToilet.xml")  # 讀取台北市公廁xml檔
+    taipei_tree = ET.parse(my_file)  # 讀取台北市公廁xml檔
     result_data = taipei_tree.findall('ToiletData')
 
     result_list = []
