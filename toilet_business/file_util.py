@@ -6,7 +6,7 @@ import os
 this_folder = os.path.dirname(os.path.abspath(__file__))
 my_file = os.path.join("{}/static".format(this_folder), 'TaipeiPublicToilet.xml')
 
-def get_data(current_lat, current_long):
+def get_data(current_lat, current_lng):
     taipei_tree = ET.parse(my_file)  # 讀取台北市公廁xml檔
     result_data = taipei_tree.findall('ToiletData')
 
@@ -18,12 +18,12 @@ def get_data(current_lat, current_long):
         name = data.find("DepName").text  # Public Toilet Name
         address = data.find("Address").text  # Public Toilet Address
         latitude = data.find("Lat").text  # 緯度
-        longtitude = data.find("Lng").text  # 經度
-        dict = {"position": "{},{}".format(latitude,longtitude), "title": name}
+        longitude = data.find("Lng").text  # 經度
+        dict = {"latitude": latitude, "longitude": longitude, "title": name}
         calulate_data = {"current_lat": float(current_lat),
-                         "current_long": float(current_long),
+                         "current_lng": float(current_lng),
                          "latitude": float(latitude),
-                         "longtitude": float(longtitude)}
+                         "longitude": float(longitude)}
 
         distance = cal_distance(calulate_data)
 
@@ -41,8 +41,8 @@ def get_data(current_lat, current_long):
 def cal_distance(data):
     # Calculate coordinate distance
     # Geopy can calculate geodesic distance between two points using the Vincenty distance or great-circle distance formulas
-    newport_ri = (data['current_lat'], data['current_long'])
-    cleveland_oh = (data['latitude'], data['longtitude'])
+    newport_ri = (data['current_lat'], data['current_lng'])
+    cleveland_oh = (data['latitude'], data['longitude'])
     # print(vincenty(newport_ri, cleveland_oh).kilometers)
     return vincenty(newport_ri, cleveland_oh).kilometers
 

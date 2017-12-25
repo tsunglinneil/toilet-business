@@ -133,6 +133,7 @@ function newMapObject(centerPoint) {
         zoom: 15,
         styles: stylesArray
     };
+
     //initial map
     map = new google.maps.Map($("#map")[0], mapOptions);
 }
@@ -187,19 +188,20 @@ function setStartPoint(point) {
 }
 
 //add marker
-function addMarker(data, title){ // data(latitude,longitude)
-    var str = data.split(",");
-    var L1 = str[0]; //latitude
-    var L2 = str[1]; //longitude
-    var myLatLng = new google.maps.LatLng(parseFloat(L1), parseFloat(L2)) //{lat:latitude, lng:longitude}
-    // console.log(myLatLng);
-
+function addMarker(position, title){ // data(latitude,longitude)
     //create new marker
     var marker = new google.maps.Marker({
-        position : myLatLng,
+        position : position,
         map : map,
         title : title
     });
+
+    return marker;
+}
+
+//set infowindow
+function addMarkerInfo(position, markerObj, title, isCalc){
+    var marker = markerObj;
 
     //create marker infowindow
     var infowindow = new google.maps.InfoWindow({
@@ -218,11 +220,10 @@ function addMarker(data, title){ // data(latitude,longitude)
         infowindow.open(map, marker);
 
         //select different travel way and show the route
-        calcRoute(currentStart, myLatLng, $("#travelMode").val());
-
+        if(isCalc){
+            calcRoute(currentStart, position, title, $("#travelMode").val());
+        }
     });
-
-    map.setCenter(myLatLng);
 }
 
 //Ajax
@@ -237,10 +238,12 @@ function markerPosition(latitude, longitude){
         data: JSON.stringify(data),
         success: function(callback) {
             callback.resultList.forEach(function myFunction(item, index) {
-                var position = item.position
-                var title = item.title
-                // console.log(position +" ; "+title)
-                addMarker(position, title);  //¡]position, title¡^
+                var lat = item.latitude;
+                var lng = item.longitude;
+                var title = item.title;
+                var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+                var markerObj = addMarker(position, title);  //¡]position, title¡^
+                addMarkerInfo(position, markerObj, title, true);
             });
         },
         error: function() {
@@ -283,9 +286,10 @@ function geocodeAddress(geocoder, resultsMap) {
 }
 
 //select different travel way and show the route
-function calcRoute(start, end, mode) {
+function calcRoute(start, end, title, mode) {
     console.log(start.lat()+","+start.lng);
     console.log(end.lat(), end.lng);
+    console.log(title);
     console.log(mode);
 
     //initial map for route
@@ -304,6 +308,11 @@ function calcRoute(start, end, mode) {
 
     directionsService.route(request, function(response, status) {
         if (status == 'OK') {
+            var route = response.routes[0].legs[0];
+
+            var markerObj = addMarker(route.end_location, title);
+            addMarkerInfo(route.end_location, markerObj, title, false);
+
             directionsDisplay.setDirections(response);
         }
     });
@@ -315,5 +324,5 @@ function calcRoute(start, end, mode) {
 //set travel mode
 function changeTravelMode(mode){
     $("#travelMode").val(mode);
-    calcRoute(currentStart, currentDestination, mode);
+    calcRoute(currentStart, currentDestination, "", mode);
 }

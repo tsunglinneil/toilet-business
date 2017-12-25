@@ -24,14 +24,14 @@ def flaskmap():
 def flaskajax():
     json = request.get_json()
     current_lat = json['latitude']
-    current_long = json['longitude']
-    print("Now position is {},{}".format(current_lat, current_long))
+    current_lng = json['longitude']
+    print("Now position is {},{}".format(current_lat, current_lng))
 
     # Test Data
     # result_list = [{"position": "{}".format("25.056334,121.543894"), "title": "post office"},
     #               {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
     #               {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
 
-    result_list = file_util.get_data(current_lat, current_long)
+    result_list = file_util.get_data(current_lat, current_lng)
 
     return jsonify(resultList=result_list)
