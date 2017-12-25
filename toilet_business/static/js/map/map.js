@@ -9,6 +9,8 @@ var oldinfowindow = null;
 var currentStart = null;
 //set current destination
 var currentDestination = null;
+//focus position's tilte
+var currentDestinationTitle = null;
 
 //set map style
 var stylesArray = [
@@ -319,10 +321,11 @@ function calcRoute(start, end, title, mode) {
 
     //set current destination for change travel mode
     currentDestination = end;
+    currentDestinationTitle = title;
 }
 
 //set travel mode
 function changeTravelMode(mode){
     $("#travelMode").val(mode);
-    calcRoute(currentStart, currentDestination, "", mode);
+    calcRoute(currentStart, currentDestination, currentDestinationTitle, mode);
 }
