@@ -327,5 +327,6 @@ function calcRoute(start, end, title, mode) {
 //set travel mode
 function changeTravelMode(mode){
     $("#travelMode").val(mode);
+    console.log(currentDestinationTitle);
     calcRoute(currentStart, currentDestination, currentDestinationTitle, mode);
 }
