@@ -6,29 +6,36 @@
 {% include '/common/header.html' %}
 
 {% block styles %}
+{{super()}}
 <link href="{{url_for('static', filename='css/map.css')}}" rel="stylesheet">
 {% endblock styles %}
 
 {% block scripts %}
+{{super()}}
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnJzJWFZEawx6AwTJiALRWa6MB0aLsvN8"></script>
-<script type="text/javascript" src="{{url_for('static', filename='js/map/map.js') }}"></script>
+<script type="text/javascript" charset="Big5" src="{{url_for('static', filename='js/map/map.js') }}"></script>
 {% endblock scripts %}
 
 {% block content %}
-<div>
+{{super()}}
+
+<input type="hidden" id="travelMode" value="DRIVING" />
+<div class="form-group">
     <input type="text" id="address" class="form-control" placeholder="Please enter area or street ..." />
-    <input class="btn btn-primary" id="specificSearch" type="button" value="Search"/>
+    <span>
+        <input class="btn btn-primary" id="specificSearch" type="button" value="Search"/>
+        <div class="btn btn-primary" id="currentSearch">Current Location</div>
+        <a href="{{ url_for('home.index') }}"><div class="btn btn-primary" id="home">Home</div></a>
+    </span>
+    <span>
+        <button class="btn btn-success" onclick="changeTravelMode('DRIVING')">Driving</button>
+        <button class="btn btn btn-info" onclick="changeTravelMode('WALKING')">Walking</button>
+        <button class="btn btn-warning" onclick="changeTravelMode('BICYCLING')">Bicycling</button>
+        <button class="btn btn btn-danger" onclick="changeTravelMode('TRANSIT')">Transit</button>
+    </span>
 </div>
 
-<div id="map"></div>
-
-<form id="form" action="{{ url_for('map.map') }}" method="POST">
-    <table>
-        <tr>
-            <td><div class="btn btn-primary" id="currentSearch">Current Location</div></td>
-            <td><a href="{{ url_for('home.index') }}"><div class="btn btn-primary" id="home">Home</div></a></td>
-        </tr>
-    </table>
-
-</form>
+<div id="map" style="float:left;width:70%; height:100%"></div>
+<div id="directionsPanel" style="float:right;width:30%;height:100%"></div>
+<form id="form" action="{{ url_for('map.map') }}" method="POST"></form>
 {% endblock %}

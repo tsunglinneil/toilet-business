@@ -1,15 +1,110 @@
 //Declare
-var map; //Google Map Object
-var taipei = new google.maps.LatLng(25.048069, 121.517101); //init position：Taipei station
+//Google Map Object
+var map;
+//init position：Taipei station
+var taipei = new google.maps.LatLng(25.048069, 121.517101);
+//set infowindow last time
+var oldinfowindow = null;
+//set current start
+var currentStart = null;
+//set current destination
+var currentDestination = null;
+
+//set map style
+var stylesArray = [
+    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+    {
+        featureType: 'administrative.locality',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#d59563'}]
+    },
+    {
+        featureType: 'poi',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#d59563'}]
+    },
+    {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [{color: '#263c3f'}]
+    },
+    {
+        featureType: 'poi.park',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#6b9a76'}]
+    },
+    {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [{color: '#38414e'}]
+    },
+    {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{color: '#212a37'}]
+    },
+    {
+        featureType: 'road',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#9ca5b3'}]
+    },
+    {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [{color: '#746855'}]
+    },
+    {
+        featureType: 'road.highway',
+        elementType: 'geometry.stroke',
+        stylers: [{color: '#1f2835'}]
+    },
+    {
+        featureType: 'road.highway',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#f3d19c'}]
+    },
+    {
+        featureType: 'transit',
+        elementType: 'geometry',
+        stylers: [{color: '#2f3948'}]
+    },
+    {
+        featureType: 'transit.station',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#d59563'}]
+    },
+    {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{color: '#17263c'}]
+    },
+    {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [{color: '#515c6d'}]
+    },
+    {
+        featureType: 'water',
+        elementType: 'labels.text.stroke',
+        stylers: [{color: '#17263c'}]
+    }
+];
 
 $(function() {
-    initMap();
+    initMap(taipei);
+
+    //initial hidden
+    $("#travelMode").val('DRIVING');
 
     $("#address").keyup(function(event) {
         if (event.keyCode === 13) {
             $("#specificSearch").click();
         }
     });
+
+
 
     $("#specificSearch").click(function () {
         var geocoder = new google.maps.Geocoder();
@@ -31,22 +126,33 @@ $(function() {
     });
 });
 
-//init map ver00
-function initMap(){
+function newMapObject(centerPoint) {
     //map setting
     var mapOptions = {
-        center: {lat: 24.052181, lng: 121.088073}, //Start Center{lat:經度, lng:緯度} (注意經緯度必須要是數值，不可放字串)
-        zoom: 15
+        center: centerPoint, //Start Center{lat:經度, lng:緯度}(LatLng物件) (注意經緯度必須要是數值，不可放字串)
+        zoom: 15,
+        styles: stylesArray
     };
     //initial map
     map = new google.maps.Map($("#map")[0], mapOptions);
+}
 
+//init map ver00
+function initMap(centerPoint){
+    newMapObject(centerPoint)
+
+    // geolocation current position
+    geoloactionProcess();
+}
+
+// geolocation current position
+function geoloactionProcess(){
     //geolocation current position
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position) {
-            start = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-            setStartPoint(start);
-            markerPosition(position.coords.latitude, position.coords.longitude)
+            currentStart = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            setStartPoint(currentStart);
+            markerPosition(position.coords.latitude, position.coords.longitude);
 
             // test mark multiple location
             // addMarker("25.056334,121.543894", "post office");  //（latitude,longitude）
@@ -63,10 +169,9 @@ function initMap(){
         });
     }else{
         alert("你的瀏覽器不支援地理定位");
-        start = taipei;
-        setStartPoint(start);
+        currentStart = taipei;
+        setStartPoint(currentStart);
     }
-
 }
 
 //set start point
@@ -86,13 +191,37 @@ function addMarker(data, title){ // data(latitude,longitude)
     var str = data.split(",");
     var L1 = str[0]; //latitude
     var L2 = str[1]; //longitude
-    var myLatLng = {lat: parseFloat(L1), lng: parseFloat(L2)}; //{lat:latitude, lng:longitude}
+    var myLatLng = new google.maps.LatLng(parseFloat(L1), parseFloat(L2)) //{lat:latitude, lng:longitude}
     // console.log(myLatLng);
+
+    //create new marker
     var marker = new google.maps.Marker({
         position : myLatLng,
         map : map,
         title : title
     });
+
+    //create marker infowindow
+    var infowindow = new google.maps.InfoWindow({
+        content: title
+    });
+
+    //listener for click event
+    marker.addListener('click', function() {
+        //if there are any info window open, close it
+        if (oldinfowindow){
+            oldinfowindow.close();
+        }
+        oldinfowindow = infowindow;
+
+        //open current marker infowindow
+        infowindow.open(map, marker);
+
+        //select different travel way and show the route
+        calcRoute(currentStart, myLatLng, $("#travelMode").val());
+
+    });
+
     map.setCenter(myLatLng);
 }
 
@@ -110,7 +239,7 @@ function markerPosition(latitude, longitude){
             callback.resultList.forEach(function myFunction(item, index) {
                 var position = item.position
                 var title = item.title
-                console.log(position +" ; "+title)
+                // console.log(position +" ; "+title)
                 addMarker(position, title);  //（position, title）
             });
         },
@@ -127,12 +256,9 @@ function markerPosition(latitude, longitude){
 */
 function geocodeAddress(geocoder, resultsMap) {
     var address = document.getElementById('address').value;
-    var mapOptions = {
-        center: {lat: 24.052181, lng: 121.088073}, //Start Center{lat:經度, lng:緯度} (注意經緯度必須要是數值，不可放字串)
-        zoom: 15
-    };
-    //initial map
-    map = new google.maps.Map($("#map")[0], mapOptions);
+
+    //initial map for marker new position
+    newMapObject(taipei);
 
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === 'OK') {
@@ -144,12 +270,50 @@ function geocodeAddress(geocoder, resultsMap) {
             longitude = results[0].geometry.location.lng();
 
             //marker the new start point
-            setStartPoint(results[0].geometry.location)
+            currentStart = results[0].geometry.location;
+            setStartPoint(currentStart);
 
             //marker position and get around place by ajax function
             markerPosition(latitude, longitude);
         } else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            alert('請輸入正確的地點資訊');
+            initMap(taipei);
         }
     });
+}
+
+//select different travel way and show the route
+function calcRoute(start, end, mode) {
+    console.log(start.lat()+","+start.lng);
+    console.log(end.lat(), end.lng);
+    console.log(mode);
+
+    //initial map for route
+    newMapObject(start);
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    var request = {
+        origin:start,
+        destination:end,
+        travelMode: google.maps.TravelMode[mode]
+    };
+
+    $("#directionsPanel").empty();
+    directionsDisplay.setMap(map);
+    directionsDisplay.setPanel($("#directionsPanel")[0]);
+
+    directionsService.route(request, function(response, status) {
+        if (status == 'OK') {
+            directionsDisplay.setDirections(response);
+        }
+    });
+
+    //set current destination for change travel mode
+    currentDestination = end;
+}
+
+//set travel mode
+function changeTravelMode(mode){
+    $("#travelMode").val(mode);
+    calcRoute(currentStart, currentDestination, mode);
 }

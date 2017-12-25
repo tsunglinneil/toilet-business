@@ -6,14 +6,17 @@
 {% include '/common/header.html' %}
 
 {% block styles %}
+{{super()}}
 <link href="{{url_for('static', filename='css/sass.css')}}" rel="stylesheet">
 {% endblock styles %}
 
 {% block scripts %}
+{{super()}}
 <script type="text/javascript" src="{{url_for('static', filename='js/home/home.js') }}"></script>
 {% endblock scripts %}
 
 {% block content %}
+{{super()}}
 <div class="header">
     <div class="maxwidth">
         <h1>TOILET</h1>
