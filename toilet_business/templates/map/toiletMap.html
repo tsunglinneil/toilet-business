@@ -32,12 +32,12 @@
     <span>
         <button class="btn btn-success" onclick="changeTravelMode('DRIVING')">Driving</button>
         <button class="btn btn btn-info" onclick="changeTravelMode('WALKING')">Walking</button>
-        <button class="btn btn-warning" onclick="changeTravelMode('BICYCLING')">Bicycling</button>
-        <button class="btn btn btn-danger" onclick="changeTravelMode('TRANSIT')">Transit</button>
+        <!--<button class="btn btn-warning" onclick="changeTravelMode('BICYCLING')">Bicycling</button>-->
+        <!--<button class="btn btn btn-danger" onclick="changeTravelMode('TRANSIT')">Transit</button>-->
     </span>
 </div>
 
-<div id="dialog-confirm"></div>
+<div id="messageBlock">Go to >>>> <span id="msgInfo"></span></div>
 <div id="map" style="float:left;width:70%; height:100%"></div>
 <div id="directionsPanel" style="float:right;width:30%;height:100%"></div>
 <form id="form" action="{{ url_for('map.map') }}" method="POST"></form>

@@ -21,10 +21,10 @@ def flaskmap():
 
 
 @map_blueprint.route('/flaskajax', methods=['POST'])
-def flaskajax():
+def flask_ajax():
     json = request.get_json()
-    current_lat = json['latitude']
-    current_lng = json['longitude']
+    current_lat = json['current_lat']
+    current_lng = json['current_lng']
     print("Now position is {},{}".format(current_lat, current_lng))
 
     # Test Data
@@ -35,3 +35,22 @@ def flaskajax():
     result_list = file_util.get_data(current_lat, current_lng, 'xml')
 
     return jsonify(resultList=result_list)
+
+
+@map_blueprint.route('/distanceajax', methods=['POST'])
+def distance_ajax():
+    json = request.get_json()
+    current_lat = json['current_lat']
+    current_lng = json['current_lng']
+    search_lat = json['search_lat']
+    search_lng = json['search_lng']
+    print("Now position is {},{}".format(current_lat, current_lng))
+
+    calulate_data = {"current_lat": float(current_lat),
+                     "current_lng": float(current_lng),
+                     "latitude": float(search_lat),
+                     "longitude": float(search_lng)}
+
+    distance = file_util.cal_distance(calulate_data);
+
+    return jsonify(distance=distance)

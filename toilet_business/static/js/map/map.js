@@ -7,12 +7,17 @@ var taipei = new google.maps.LatLng(25.048069, 121.517101);
 var oldinfowindow = null;
 //set current start Marker
 var currentStartMarkder = null;
+//set current start Marker
+var currentDestinationMarkder = null;
 //set current start
 var currentStart = null;
 //set current destination
 var currentDestination = null;
-//focus position's tilte
-var currentDestinationTitle = null;
+//toilet detail info
+var currentToiletDetail = null;
+//real time location
+var enableRealTimeLocation = true;
+
 
 // var pubnub = new PubNub({
 //     publishKey:   'pub-c-fc8119f1-3289-4e26-ae45-1dbd30e9b970',
@@ -102,6 +107,8 @@ var stylesArray = [
 ];
 
 $(function() {
+    initSetting();
+
     initMap(taipei);
 
     var optn = {
@@ -113,13 +120,14 @@ $(function() {
     navigator.geolocation.watchPosition(
         function (position) {
             console.log("watchPosition");
-            console.log(position.coords.latitude+","+position.coords.longitude);
-            currentStart = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-            setStartPoint(currentStart);
+            //continuous track current location
+            if(enableRealTimeLocation) {
+                // console.log("enableRealTimeLocation");
+                // console.log(position.coords.latitude + "," + position.coords.longitude);
+                currentStart = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                setStartPoint(currentStart);
+            }
         });
-
-    //initial hidden
-    $("#travelMode").val('DRIVING');
 
     $("#address").keyup(function(event) {
         if (event.keyCode === 13) {
@@ -145,10 +153,21 @@ $(function() {
         form.attr("method", "POST");
         form.submit();
     });
-
-    $("#dialog-confirm").html("Confirm Dialog Box");
-
 });
+
+function initSetting() {
+    console.log("initSetting");
+    oldinfowindow = null;
+    currentStartMarkder = null;
+    currentStart = null;
+    currentDestination = null;
+    currentToiletDetail = null;
+
+    $("#messageBlock").hide();
+
+    //initial hidden
+    $("#travelMode").val('DRIVING');
+}
 
 function newMapObject(centerPoint) {
     //map setting
@@ -230,16 +249,29 @@ function addMarker(position, title){ // data(latitude,longitude)
 }
 
 //set infowindow
-function addMarkerInfo(position, markerObj, title, isCalc){
+function addMarkerInfo(position, markerObj, itemObj, isCalc){
     var marker = markerObj;
-
-    //create marker infowindow
-    var infowindow = new google.maps.InfoWindow({
-        content: title
-    });
+    var item = itemObj;
 
     //listener for click event
     marker.addListener('click', function() {
+        var contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+item.title+'</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>總座數: </b>'+item.number+'</p>'+
+            '<p><b>友善空間: </b>'+item.rest+'</p>'+
+            '<p><b>親子廁間: </b>'+item.child+'</p>'+
+            '<p><b>貼心公廁: </b>'+item.kindly+'</p>'+
+            '</div>'+
+            '</div>';
+
+        //create marker infowindow
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
         //if there are any info window open, close it
         if (oldinfowindow){
             oldinfowindow.close();
@@ -251,14 +283,20 @@ function addMarkerInfo(position, markerObj, title, isCalc){
 
         //select different travel way and show the route
         if(isCalc){
-            calcRoute(currentStart, position, title, $("#travelMode").val());
+            var msg = confirm("是否前往目的地?");
+            if(msg) {
+                console.log(item);
+                console.log(contentString);
+                currentDestinationMarkder = marker;
+                calcRoute(currentStart, position, item, $("#travelMode").val());
+            }
         }
     });
 }
 
 //Ajax
 function markerPosition(latitude, longitude){
-    var data = {"latitude":latitude, "longitude":longitude};
+    var data = {"current_lat":latitude, "current_lng":longitude};
 
     $.ajax({
         type: 'POST',
@@ -270,10 +308,9 @@ function markerPosition(latitude, longitude){
             callback.resultList.forEach(function myFunction(item, index) {
                 var lat = item.latitude;
                 var lng = item.longitude;
-                var title = item.title;
                 var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-                var markerObj = addMarker(position, title);  //（position, title）
-                addMarkerInfo(position, markerObj, title, true);
+                var markerObj = addMarker(position, item.title);  //（position, title）
+                addMarkerInfo(position, markerObj, item, true);
             });
         },
         error: function() {
@@ -289,18 +326,29 @@ function markerPosition(latitude, longitude){
 */
 function geocodeAddress(geocoder, resultsMap) {
     var address = document.getElementById('address').value;
-
-    //initial map for marker new position
-    newMapObject(taipei);
-
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === 'OK') {
             // console.log(results[0].geometry.location.lat());
             // console.log(results[0].geometry.location.lng());
 
+            var current_lat = currentStart.lat();
+            var current_lng = currentStart.lng();
+
+            // initSetting();
+            //initial map for marker new position
+            newMapObject(taipei);
+
             //get address location data
-            latitude = results[0].geometry.location.lat();
-            longitude = results[0].geometry.location.lng();
+            var latitude = results[0].geometry.location.lat();
+            var longitude = results[0].geometry.location.lng();
+
+            var data = {"current_lat": current_lat,
+                        "current_lng": current_lng,
+                        "search_lat": latitude,
+                        "search_lng": longitude};
+
+            //get distance infomation
+            getDistanceInfo(data);
 
             //marker the new start point
             currentStart = results[0].geometry.location;
@@ -315,12 +363,40 @@ function geocodeAddress(geocoder, resultsMap) {
     });
 }
 
+//call distance_ajax
+function getDistanceInfo(data) {
+    var distance = null;
+    $.ajax({
+        type: 'POST',
+        url: '/map/distanceajax',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(data),
+        success: function(callback) {
+            var distance = callback.distance;
+            // console.log(distance);
+            if (distance){
+                if(distance >= 1){
+                    enableRealTimeLocation = false;
+                }else{
+                    enableRealTimeLocation = true;
+                }
+            }
+        },
+        error: function() {
+            console.log("無法取得距離資訊!");
+        }
+    });
+
+}
+
 //select different travel way and show the route
-function calcRoute(start, end, title, mode) {
-    console.log(start.lat()+","+start.lng);
-    console.log(end.lat(), end.lng);
-    console.log(title);
-    console.log(mode);
+function calcRoute(start, end, itemObj, mode) {
+    // console.log(start.lat()+","+start.lng);
+    // console.log(end.lat(), end.lng);
+    // console.log(title);
+    // console.log(mode);
+    currentToiletDetail = itemObj;
 
     //initial map for route
     newMapObject(start);
@@ -345,21 +421,26 @@ function calcRoute(start, end, title, mode) {
         if (status == 'OK') {
             var route = response.routes[0].legs[0];
 
-            var markerObj = addMarker(route.end_location, title);
-            addMarkerInfo(route.end_location, markerObj, title, false);
+            var markerObj = addMarker(route.end_location, currentToiletDetail.title);
+            addMarkerInfo(route.end_location, markerObj, currentToiletDetail, false);
 
             directionsDisplay.setDirections(response);
         }
     });
 
+    $("#msgInfo").html(currentToiletDetail.title);
+    $("#messageBlock").show();
+
     //set current destination for change travel mode
     currentDestination = end;
-    currentDestinationTitle = title;
 }
 
 //set travel mode
 function changeTravelMode(mode){
     $("#travelMode").val(mode);
-    console.log(currentDestinationTitle);
-    calcRoute(currentStart, currentDestination, currentDestinationTitle, mode);
+    if (currentDestination) {
+        calcRoute(currentStart, currentDestination, currentToiletDetail, mode);
+    }else{
+        alert("請選擇目的地");
+    }
 }

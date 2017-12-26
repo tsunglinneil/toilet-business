@@ -26,11 +26,24 @@ def read_xml(current_lat, current_lng):
     for data in result_data:
         dict = {}
 
+        number = data.find("Number").text       # 總座數
+        rest = "是" if str(data.find("Restroom").text).upper() == 'Y' else "否"       # 場所提供行動不便者使用廁所
+        child = "是" if str(data.find("Childroom").text).upper() == 'Y' else "否"     # 親子廁間
+        kindly = "是" if str(data.find("Kindlyroom").text).upper() == 'Y' else "否"   # 貼心公廁
+
         name = data.find("DepName").text  # Public Toilet Name
         address = data.find("Address").text  # Public Toilet Address
         latitude = data.find("Lat").text  # 緯度
         longitude = data.find("Lng").text  # 經度
-        dict = {"latitude": latitude, "longitude": longitude, "title": name}
+
+        dict = {"number": number,
+                "rest": rest,
+                "child": child,
+                "kindly": kindly,
+                "title": name,
+                "latitude": latitude,
+                "longitude": longitude}
+
         calulate_data = {"current_lat": float(current_lat),
                          "current_lng": float(current_lng),
                          "latitude": float(latitude),
