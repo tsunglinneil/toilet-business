@@ -104,15 +104,19 @@ var stylesArray = [
 $(function() {
     initMap(taipei);
 
-    setInterval(function () {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                currentStart = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-                // console.log(position.coords.latitude+","+position.coords.longitude);
-                setStartPoint(currentStart);
-            });
-        }
-    }, 1000);
+    var optn = {
+        enableHighAccuracy: true,
+        timeout: Infinity,
+        maximumAge: 0
+    }
+
+    navigator.geolocation.watchPosition(
+        function (position) {
+            console.log("watchPosition");
+            console.log(position.coords.latitude+","+position.coords.longitude);
+            currentStart = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            setStartPoint(currentStart);
+        });
 
     //initial hidden
     $("#travelMode").val('DRIVING');
