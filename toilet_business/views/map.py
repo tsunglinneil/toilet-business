@@ -32,6 +32,6 @@ def flaskajax():
     #               {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
     #               {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
 
-    result_list = file_util.get_data(current_lat, current_lng)
+    result_list = file_util.get_data(current_lat, current_lng, 'xml')
 
     return jsonify(resultList=result_list)

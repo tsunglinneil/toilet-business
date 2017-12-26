@@ -12,6 +12,8 @@
 
 {% block scripts %}
 {{super()}}
+<!-- real time location -->
+<script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.19.0.min.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnJzJWFZEawx6AwTJiALRWa6MB0aLsvN8"></script>
 <script type="text/javascript" charset="Big5" src="{{url_for('static', filename='js/map/map.js') }}"></script>
 {% endblock scripts %}
@@ -35,6 +37,7 @@
     </span>
 </div>
 
+<div id="dialog-confirm"></div>
 <div id="map" style="float:left;width:70%; height:100%"></div>
 <div id="directionsPanel" style="float:right;width:30%;height:100%"></div>
 <form id="form" action="{{ url_for('map.map') }}" method="POST"></form>

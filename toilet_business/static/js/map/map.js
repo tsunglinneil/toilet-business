@@ -5,12 +5,19 @@ var map;
 var taipei = new google.maps.LatLng(25.048069, 121.517101);
 //set infowindow last time
 var oldinfowindow = null;
+//set current start Marker
+var currentStartMarkder = null;
 //set current start
 var currentStart = null;
 //set current destination
 var currentDestination = null;
 //focus position's tilte
 var currentDestinationTitle = null;
+
+// var pubnub = new PubNub({
+//     publishKey:   'pub-c-fc8119f1-3289-4e26-ae45-1dbd30e9b970',
+//     subscribeKey: 'sub-c-ae59e504-e9f4-11e7-9723-66707ad51ffc'
+// });
 
 //set map style
 var stylesArray = [
@@ -97,6 +104,16 @@ var stylesArray = [
 $(function() {
     initMap(taipei);
 
+    setInterval(function () {
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                currentStart = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+                // console.log(position.coords.latitude+","+position.coords.longitude);
+                setStartPoint(currentStart);
+            });
+        }
+    }, 1000);
+
     //initial hidden
     $("#travelMode").val('DRIVING');
 
@@ -105,8 +122,6 @@ $(function() {
             $("#specificSearch").click();
         }
     });
-
-
 
     $("#specificSearch").click(function () {
         var geocoder = new google.maps.Geocoder();
@@ -126,6 +141,9 @@ $(function() {
         form.attr("method", "POST");
         form.submit();
     });
+
+    $("#dialog-confirm").html("Confirm Dialog Box");
+
 });
 
 function newMapObject(centerPoint) {
@@ -187,6 +205,12 @@ function setStartPoint(point) {
         title : "±zªº¦ì¸m",
         map : map
     });
+
+    //set real time location
+    if(currentStartMarkder){
+        currentStartMarkder.setMap(null);
+    }
+    currentStartMarkder = startMarker;
 }
 
 //add marker
@@ -301,7 +325,12 @@ function calcRoute(start, end, title, mode) {
     var request = {
         origin:start,
         destination:end,
-        travelMode: google.maps.TravelMode[mode]
+        travelMode: google.maps.TravelMode[mode],
+        transitOptions: {
+            departureTime: new Date(1337675679473),
+            modes: ['BUS'],
+            routingPreference: 'FEWER_TRANSFERS'
+        }
     };
 
     $("#directionsPanel").empty();
