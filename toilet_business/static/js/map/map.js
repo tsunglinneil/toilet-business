@@ -237,12 +237,13 @@ function setStartPoint(point) {
 }
 
 //add marker
-function addMarker(position, title){ // data(latitude,longitude)
+function addMarker(position, title, label){ // data(latitude,longitude)
     //create new marker
     var marker = new google.maps.Marker({
         position : position,
         map : map,
-        title : title
+        title : title,
+        label: label
     });
 
     return marker;
@@ -253,31 +254,34 @@ function addMarkerInfo(position, markerObj, itemObj, isCalc){
     var marker = markerObj;
     var item = itemObj;
 
+    var contentString = '<div id="content">'+
+        '<div id="siteNotice">'+
+        '</div>'+
+        '<h1 id="firstHeading" class="firstHeading">'+item.title+'</h1>'+
+        '<div id="bodyContent">'+
+        '<p><b>羆畒计: </b>'+item.number+'</p>'+
+        '<p><b>ね到丁: </b>'+item.rest+'</p>'+
+        '<p><b>克碯丁: </b>'+item.child+'</p>'+
+        '<p><b>禟みそ碯: </b>'+item.kindly+'</p>'+
+        '</div>'+
+        '</div>';
+
+    //create marker infowindow
+    var infowindow = new google.maps.InfoWindow({
+        content: contentString
+    });
+
+    //if there are any info window open, close it
+    if (oldinfowindow){
+        oldinfowindow.close();
+    }
+    oldinfowindow = infowindow;
+
+    //open current marker infowindow
+    infowindow.open(map, marker);
+
     //listener for click event
     marker.addListener('click', function() {
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">'+item.title+'</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>羆畒计: </b>'+item.number+'</p>'+
-            '<p><b>ね到丁: </b>'+item.rest+'</p>'+
-            '<p><b>克碯丁: </b>'+item.child+'</p>'+
-            '<p><b>禟みそ碯: </b>'+item.kindly+'</p>'+
-            '</div>'+
-            '</div>';
-
-        //create marker infowindow
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
-
-        //if there are any info window open, close it
-        if (oldinfowindow){
-            oldinfowindow.close();
-        }
-        oldinfowindow = infowindow;
-
         //open current marker infowindow
         infowindow.open(map, marker);
 
@@ -285,9 +289,6 @@ function addMarkerInfo(position, markerObj, itemObj, isCalc){
         if(isCalc){
             var msg = confirm("琌玡┕ヘ?");
             if(msg) {
-                console.log(item);
-                console.log(contentString);
-                currentDestinationMarkder = marker;
                 calcRoute(currentStart, position, item, $("#travelMode").val());
             }
         }
@@ -309,7 +310,7 @@ function markerPosition(latitude, longitude){
                 var lat = item.latitude;
                 var lng = item.longitude;
                 var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-                var markerObj = addMarker(position, item.title);  //position, title
+                var markerObj = addMarker(position, item.title, null);  //position, title
                 addMarkerInfo(position, markerObj, item, true);
             });
         },
@@ -400,7 +401,8 @@ function calcRoute(start, end, itemObj, mode) {
 
     //initial map for route
     newMapObject(start);
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+    setStartPoint(start);
+    var directionsDisplay = new google.maps.DirectionsRenderer({ suppressMarkers: true });
     var directionsService = new google.maps.DirectionsService;
     var request = {
         origin:start,
@@ -420,16 +422,17 @@ function calcRoute(start, end, itemObj, mode) {
     directionsService.route(request, function(response, status) {
         if (status == 'OK') {
             var route = response.routes[0].legs[0];
-
-            var markerObj = addMarker(route.end_location, currentToiletDetail.title);
-            addMarkerInfo(route.end_location, markerObj, currentToiletDetail, false);
-
             directionsDisplay.setDirections(response);
+
+            var startMarkerObj = addMarker(route.start_location, '癬翴', 'A');
+            var endMarkerObj = addMarker(route.end_location, currentToiletDetail.title, 'B');
+            addMarkerInfo(route.end_location, endMarkerObj, currentToiletDetail, false);
+
+            $("#msgInfo").html(currentToiletDetail.title);
+            $("#messageBlock").show();
         }
     });
 
-    $("#msgInfo").html(currentToiletDetail.title);
-    $("#messageBlock").show();
 
     //set current destination for change travel mode
     currentDestination = end;
