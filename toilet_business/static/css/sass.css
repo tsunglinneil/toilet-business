@@ -123,6 +123,7 @@
     background-color: #363537;
     box-sizing: border-box;
     color: #FCF6B1;
+    margin-left: 0%;
   }
 
   [class*="header"] h1 {
@@ -163,12 +164,10 @@
 
   [class*="content"] h5 {
     display: inline-block;
-    top: 10px;
     font-size: 10px;
     letter-spacing: 2px;
     color: #FCF6B1;
-    margin-top: 50px;
-    margin-left: 60%;
+    margin-left: 65%;
   }
 
   [class*="content"] h6 {
@@ -178,8 +177,8 @@
     margin-left: 0%;
   }
 
-  [class*="content titlehr"] {
-    width: 250px;
+  [class*="content"] [class*="titlehr"] {
+    width: 100%;
     border-bottom: solid 5px;
     margin-left: 0%;
   }
@@ -198,4 +197,13 @@
     margin-left: 0%;
   }
 
+  [class*="button"] {
+    display: inline-block;
+    border: solid 1px none;
+    letter-spacing: 1.5px;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+    margin-left: 0%;
+  }
 }
