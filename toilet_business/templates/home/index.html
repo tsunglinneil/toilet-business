@@ -18,22 +18,19 @@
 {% block content %}
 {{super()}}
 <div class="header">
-    <div class="maxwidth">
-        <h1>TOILET</h1>
-    </div><img class="icon" src="https://i.imgur.com/SV2lyg1.png"/>
+    <h1>TOILET</h1><img class="icon" src="https://i.imgur.com/SV2lyg1.png"/>
 </div>
 <form id="form" action="{{ url_for('map.map') }}" method="POST">
     <div class="content">
-        <div class="maxwidth">
-            <h2>Slogan</h2>
-            <h3>Toilet Business</h3>
-            <div class="titlehr"></div><br/>
-            <guideline>Toilet Spot</guideline><br/>
-            <hr color="#A9E5BB"/><img class="pic" src="https://i.imgur.com/ENiAKsF.png"/>
-            <h4>Function</h4>
-            <div class="button button_jasper" id="currentSearch">Search Location</div>
-            <h5>Toliet&nbsp;B&nbsp;.inc</h5>
+        <h2>Topimap</h2>
+        <h3>Have a nice pee.</h3>
+        <div class="titlehr"></div>
+        <h6>Toilet&nbsp;Spot</h6><img class="pic" src="https://imgur.com/GKH051X.png"/>
+        <h4>Function</h4>
+        <div class="button" id="currentSearch">
+            <p>Search Location</p>
         </div>
+        <h5>Toliet&nbsp;B&nbsp;.inc</h5>
     </div>
 </form>
 {% endblock %}

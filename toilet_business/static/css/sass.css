@@ -1,95 +1,201 @@
-html, body {
-  padding: 0px;
-  margin: 0px;
-}
-
-.header {
-  height: 200px;
-  background-color: #A9E5BB;
-}
-
-.icon {
-  width: 100px;
-  height: 100px;
-  margin-top: 55px;
-  margin-left: 80px;
+* {
+  box-sizing: border-box;
 }
 
 * {
-  position: relative;
-  font-family: Fira Sans, Microsoft Jhenghei;
+  font-family: Microsoft Jhenghei;
 }
 
-.maxwidth {
-  max-width: 768px;
-  margin-left: auto;
-  margin-right: auto;
+[class*="content"] {
+  float: left;
+  padding: 15px;
 }
-.maxwidth h1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 50%);
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  background-color: #A9E5BB;
+}
+
+.header h1 {
+  position: fixed;
+  /*transform: translate(90%, -15%);*/
   display: inline-block;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 60px;
-  letter-spacing: 75px;
+  margin-left: 35%;
+  margin-right: 30%;
+  font-size: 50px;
+  letter-spacing: 60px;
   color: #FCF6B1;
 }
 
+/* For desktop: */
 .content {
-  padding: 50px;
-  letter-spacing: 1px;
+  padding: 70px;
+  width: 100%;
   background-color: #363537;
   color: #FCF6B1;
 }
+
 .content h2 {
-  font-size: 40px;
-  line-height: 28px;
+  font-size: 55px;
   letter-spacing: 1.5px;
+  margin-left: 20%;
 }
+
 .content h3 {
-  font-size: 20px;
+  font-size: 28px;
   line-height: 20px;
   letter-spacing: 2px;
   color: #A9E5BB;
+  margin-left: 20%;
 }
-.content .titlehr {
-  width: 90px;
-  border-bottom: solid 5px;
-}
-.content .pic {
-  width: 600px;
-  height: 400px;
-  margin-top: 30px;
-  margin-left: 10%;
-}
+
 .content h4 {
+  top: 10px;
   font-size: 20px;
   line-height: 20px;
   letter-spacing: 2px;
   color: #A9E5BB;
+  margin-left: 20%;
 }
+
 .content h5 {
   display: inline-block;
+  top: 10px;
   font-size: 10px;
   letter-spacing: 2px;
   color: #FCF6B1;
-  margin-top: 50px;
-  margin-left: 670px;
+  /*margin-top: 50px;*/
+  margin-left: 40%;
+}
+
+.content h6 {
+  font-size: 25px;
+  letter-spacing: 2px;
+  color: #DB3A3E;
+  margin-left: 20%;
+}
+
+.content .titlehr {
+  width: 250px;
+  border-bottom: solid 5px;
+  margin-left: 20%;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  margin-top: 12px;
+  margin-left: 80px;
+}
+
+.pic {
+  width: 60%;
+  height: 32%;
+  margin-left: 20%;
+  margin-right: 20%;
+  box-sizing: border-box;
+  box-shadow: 0px 20px 15px -200px rgba(0, 0, 0, 0.2);
 }
 
 .button {
   display: inline-block;
   border: solid 1px none;
-  padding: 5px 25px;
-  margin-right: 10px;
   letter-spacing: 1.5px;
   font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-left: 20%;
 }
-
-.button_jasper {
+.button p {
   background-color: #DB3A3E;
   color: #FCF6B1;
+  padding: 5px;
+  padding-right: 8px;
+  padding-left: 9px;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  [class*="content"] {
+    width: 100%;
+    background-color: #363537;
+    box-sizing: border-box;
+    color: #FCF6B1;
+  }
+
+  [class*="header"] h1 {
+    position: fixed;
+    /*transform: translate(90%, -15%);*/
+    display: inline-block;
+    margin-top: 8%;
+    margin-left: 30%;
+    margin-right: 30%;
+    font-size: 34px;
+    letter-spacing: 25px;
+    color: #FCF6B1;
+  }
+
+  [class*="content"] h2 {
+    font-size: 40px;
+    letter-spacing: 1.5px;
+    margin-left: 0%;
+    margin-top: 10%;
+  }
+
+  [class*="content"] h3 {
+    font-size: 24px;
+    line-height: 20px;
+    letter-spacing: 2px;
+    color: #A9E5BB;
+    margin-left: 0%;
+  }
+
+  [class*="content"] h4 {
+    top: 10px;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 2px;
+    color: #A9E5BB;
+    margin-left: 0%;
+  }
+
+  [class*="content"] h5 {
+    display: inline-block;
+    top: 10px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #FCF6B1;
+    margin-top: 50px;
+    margin-left: 60%;
+  }
+
+  [class*="content"] h6 {
+    font-size: 25px;
+    letter-spacing: 2px;
+    color: #DB3A3E;
+    margin-left: 0%;
+  }
+
+  [class*="content titlehr"] {
+    width: 250px;
+    border-bottom: solid 5px;
+    margin-left: 0%;
+  }
+
+  [class*="icon"] {
+    width: 20%;
+    height: 80%;
+    margin-top: 2%;
+    margin-left: 6%;
+  }
+
+  [class*="pic"] {
+    width: 100%;
+    height: 32%;
+    margin-right: 0%;
+    margin-left: 0%;
+  }
+
 }
