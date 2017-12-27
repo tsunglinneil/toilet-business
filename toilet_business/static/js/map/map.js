@@ -342,6 +342,7 @@ function markerPosition(latitude, longitude){
     3. marker position and get around place by ajax function
 */
 function geocodeAddress(geocoder, resultsMap) {
+    currentDestination = null;
     var address = document.getElementById('address').value;
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === 'OK') {
@@ -466,6 +467,7 @@ function changeTravelMode(mode){
 
 //search by room type
 function searchByRoomType(roomType) {
+    currentDestination = null;
     defaultRoomType = roomType;
     var current_lat = currentStart.lat();
     var current_lng = currentStart.lng();
