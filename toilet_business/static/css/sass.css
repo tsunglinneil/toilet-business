@@ -1,8 +1,5 @@
 * {
   box-sizing: border-box;
-}
-
-* {
   font-family: Microsoft Jhenghei;
 }
 
@@ -14,7 +11,7 @@
 .header {
   position: fixed;
   width: 100%;
-  height: 100px;
+  /*height: 100px;*/
   background-color: #A9E5BB;
 }
 
@@ -40,6 +37,7 @@
 .content h2 {
   font-size: 55px;
   letter-spacing: 1.5px;
+  margin-top: 2%;
   margin-left: 20%;
 }
 
@@ -52,22 +50,19 @@
 }
 
 .content h4 {
-  top: 10px;
+  margin-top: 1%;
   font-size: 20px;
-  line-height: 20px;
   letter-spacing: 2px;
   color: #A9E5BB;
   margin-left: 20%;
 }
 
 .content h5 {
-  display: inline-block;
-  top: 10px;
+  margin-top: 2%;
   font-size: 10px;
   letter-spacing: 2px;
   color: #FCF6B1;
-  /*margin-top: 50px;*/
-  margin-left: 40%;
+  margin-left: 73%;
 }
 
 .content h6 {
@@ -86,7 +81,7 @@
 .icon {
   width: 80px;
   height: 80px;
-  margin-top: 12px;
+  /*margin-top: 12px;*/
   margin-left: 80px;
 }
 
@@ -100,6 +95,7 @@
 }
 
 .button {
+  margin-top: 1%;
   display: inline-block;
   border: solid 1px none;
   letter-spacing: 1.5px;
@@ -118,6 +114,12 @@
 
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
+  [class*="icon"] {
+    width: 70px;
+    height: 70px;
+    margin-left: 12px;
+  }
+
   [class*="content"] {
     width: 100%;
     background-color: #363537;
@@ -126,36 +128,39 @@
     margin-left: 0%;
   }
 
+  [class*="header"] {
+    position: fixed;
+    width: 100%;
+    background-color: #A9E5BB;
+  }
+
   [class*="header"] h1 {
     position: fixed;
-    /*transform: translate(90%, -15%);*/
     display: inline-block;
-    margin-top: 8%;
-    margin-left: 30%;
-    margin-right: 30%;
-    font-size: 34px;
-    letter-spacing: 25px;
+    text-align: center;
+    font-size: 25px;
+    letter-spacing: 22px;
     color: #FCF6B1;
   }
 
   [class*="content"] h2 {
-    font-size: 40px;
+    font-size: 35px;
     letter-spacing: 1.5px;
+    margin-top: 16%;
     margin-left: 0%;
-    margin-top: 10%;
   }
 
   [class*="content"] h3 {
-    font-size: 24px;
-    line-height: 20px;
+    font-size: 19px;
+    line-height: 15px;
     letter-spacing: 2px;
     color: #A9E5BB;
     margin-left: 0%;
   }
 
   [class*="content"] h4 {
-    top: 10px;
-    font-size: 18px;
+    margin-top: 6%;
+    font-size: 13px;
     line-height: 20px;
     letter-spacing: 2px;
     color: #A9E5BB;
@@ -163,15 +168,14 @@
   }
 
   [class*="content"] h5 {
-    display: inline-block;
-    font-size: 10px;
+    font-size: 5px;
     letter-spacing: 2px;
     color: #FCF6B1;
-    margin-left: 65%;
+    margin-left: 0%;
   }
 
   [class*="content"] h6 {
-    font-size: 25px;
+    font-size: 20px;
     letter-spacing: 2px;
     color: #DB3A3E;
     margin-left: 0%;
@@ -181,13 +185,6 @@
     width: 100%;
     border-bottom: solid 5px;
     margin-left: 0%;
-  }
-
-  [class*="icon"] {
-    width: 20%;
-    height: 80%;
-    margin-top: 2%;
-    margin-left: 6%;
   }
 
   [class*="pic"] {
@@ -201,9 +198,17 @@
     display: inline-block;
     border: solid 1px none;
     letter-spacing: 1.5px;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 900;
     cursor: pointer;
     margin-left: 0%;
+  }
+
+  [class*="button"] p {
+    background-color: #DB3A3E;
+    color: #FCF6B1;
+    padding: 5px;
+    padding-right: 5px;
+    padding-left: 6px;
   }
 }

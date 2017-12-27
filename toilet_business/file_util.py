@@ -6,14 +6,14 @@ import os
 import csv
 
 
-def get_data(current_lat, current_lng, file_type):
+def get_data(current_lat, current_lng, room_type, file_type):
     if str(file_type).upper() == "XML":
-        return read_xml(current_lat, current_lng)
+        return read_xml(current_lat, current_lng, room_type)
     elif str(file_type).upper() == "CSV":
-        return read_csv(current_lat, current_lng)
+        return read_csv(current_lat, current_lng, room_type)
 
 
-def read_xml(current_lat, current_lng):
+def read_xml(current_lat, current_lng, room_type):
     print("XML")
     this_folder = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join("{}/static/datas/xml".format(this_folder), 'TaipeiPublicToilet.xml')
@@ -21,15 +21,17 @@ def read_xml(current_lat, current_lng):
     taipei_tree = ET.parse(my_file)  # 讀取台北市公廁xml檔
     result_data = taipei_tree.findall('ToiletData')
 
+    # recorde distance with key("latitude,longitude")
+    distance_list = {}
     result_list = []
 
     for data in result_data:
         dict = {}
 
         number = data.find("Number").text       # 總座數
-        rest = "是" if str(data.find("Restroom").text).upper() == 'Y' else "否"       # 場所提供行動不便者使用廁所
-        child = "是" if str(data.find("Childroom").text).upper() == 'Y' else "否"     # 親子廁間
-        kindly = "是" if str(data.find("Kindlyroom").text).upper() == 'Y' else "否"   # 貼心公廁
+        rest = data.find("Restroom").text       # 場所提供行動不便者使用廁所
+        child = data.find("Childroom").text     # 親子廁間
+        kindly = data.find("Kindlyroom").text   # 貼心公廁
 
         name = data.find("DepName").text  # Public Toilet Name
         address = data.find("Address").text  # Public Toilet Address
@@ -37,9 +39,9 @@ def read_xml(current_lat, current_lng):
         longitude = data.find("Lng").text  # 經度
 
         dict = {"number": number,
-                "rest": rest,
-                "child": child,
-                "kindly": kindly,
+                "rest": str(rest).upper(),
+                "child": str(child).upper(),
+                "kindly": str(kindly).upper(),
                 "title": name,
                 "latitude": latitude,
                 "longitude": longitude}
@@ -51,18 +53,41 @@ def read_xml(current_lat, current_lng):
 
         distance = cal_distance(calulate_data)
 
-        if distance < 0.5:
-            # print(distance)
+        if check_rule(distance, room_type, dict):
+            key = "{},{}".format(dict["latitude"], dict["longitude"])
+            distance_list[key] = distance
+            dict['rest'] = "是" if str(rest).upper() == 'Y' else "否"
+            dict['child'] = "是" if str(child).upper() == 'Y' else "否"
+            dict['kindly'] = "是" if str(kindly).upper() == 'Y' else "否"
+            dict['distance'] = distance
             result_list.append(dict)
             # print("地點:{}, 地址:{}, 經度:{}, 緯度:{}".format(name,address,latitude,longtitude))
+
+    min_key = min(distance_list.keys(), key=(lambda k: distance_list[k]))
+    print(min_key)
+    print(distance_list[min_key])
 
     # for list in result_list:
     #     print("position is {} and title is {}".format(list['position'],list['title']))
 
-    return result_list
+    return result_list, min_key
 
 
-def read_csv(current_lat, current_lng):
+def check_rule(distance, room_type, dict):
+    if distance < 0.5:
+        if 'rest' == room_type:
+            return True if dict['rest'] == 'Y' else False
+        elif 'child' == room_type:
+            return True if dict['child'] == 'Y' else False
+        elif 'kindly' == room_type:
+            return True if dict['kindly'] == 'Y' else False
+        elif 'ALL' == room_type:
+            return True;
+    else:
+        return False
+
+
+def read_csv(current_lat, current_lng, room_type):
     print("CSV")
     this_folder = os.path.dirname(os.path.abspath(__file__))
     my_file = os.path.join("{}/static/datas/csv".format(this_folder), 'toilets.csv')

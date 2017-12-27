@@ -25,6 +25,8 @@ def flask_ajax():
     json = request.get_json()
     current_lat = json['current_lat']
     current_lng = json['current_lng']
+    room_type = json['room_type']
+
     print("Now position is {},{}".format(current_lat, current_lng))
 
     # Test Data
@@ -32,9 +34,9 @@ def flask_ajax():
     #               {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
     #               {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
 
-    result_list = file_util.get_data(current_lat, current_lng, 'xml')
+    result_list, min_key = file_util.get_data(current_lat, current_lng, room_type, 'xml')
 
-    return jsonify(resultList=result_list)
+    return jsonify(resultList=result_list, minKey=min_key)
 
 
 @map_blueprint.route('/distanceajax', methods=['POST'])

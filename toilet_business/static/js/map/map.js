@@ -17,6 +17,12 @@ var currentDestination = null;
 var currentToiletDetail = null;
 //real time location
 var enableRealTimeLocation = true;
+//max key
+var minKey = null;
+//max marker
+var minMarker = null;
+//room type
+var defaultRoomType = "ALL";
 
 
 // var pubnub = new PubNub({
@@ -164,6 +170,7 @@ function initSetting() {
     currentToiletDetail = null;
 
     $("#messageBlock").hide();
+    $("#minPath").hide();
 
     //initial hidden
     $("#travelMode").val('DRIVING');
@@ -183,7 +190,7 @@ function newMapObject(centerPoint) {
 
 //init map ver00
 function initMap(centerPoint){
-    newMapObject(centerPoint)
+    newMapObject(centerPoint);
 
     // geolocation current position
     geoloactionProcess();
@@ -253,11 +260,11 @@ function addMarker(position, title, label){ // data(latitude,longitude)
 function addMarkerInfo(position, markerObj, itemObj, isCalc){
     var marker = markerObj;
     var item = itemObj;
-
+    var comparaKey = item.latitude+","+item.longitude;
     var contentString = '<div id="content">'+
         '<div id="siteNotice">'+
         '</div>'+
-        '<h1 id="firstHeading" class="firstHeading">'+item.title+'</h1>'+
+        '<h3 id="firstHeading" class="firstHeading">'+item.title+'</h3>'+
         '<div id="bodyContent">'+
         '<p><b>總座數: </b>'+item.number+'</p>'+
         '<p><b>友善空間: </b>'+item.rest+'</p>'+
@@ -271,23 +278,30 @@ function addMarkerInfo(position, markerObj, itemObj, isCalc){
         content: contentString
     });
 
-    //if there are any info window open, close it
-    if (oldinfowindow){
-        oldinfowindow.close();
-    }
-    oldinfowindow = infowindow;
-
     //open current marker infowindow
-    infowindow.open(map, marker);
+    //優先顯示最近位置的infowindow
+
+    if (comparaKey == minKey){
+        // console.log("最近的座標"+comparaKey);
+        $("#minPath").html("最近的公廁 >>> "+item.title);
+        $("#minPath").show();
+        minMarker = marker;
+    }
 
     //listener for click event
     marker.addListener('click', function() {
+        //if there are any info window open, close it
+        if (oldinfowindow){
+            oldinfowindow.close();
+        }
+        oldinfowindow = infowindow;
+
         //open current marker infowindow
         infowindow.open(map, marker);
 
         //select different travel way and show the route
         if(isCalc){
-            var msg = confirm("是否前往目的地?");
+            var msg = confirm("是否前往目的地 "+item.title+" ?");
             if(msg) {
                 calcRoute(currentStart, position, item, $("#travelMode").val());
             }
@@ -297,7 +311,7 @@ function addMarkerInfo(position, markerObj, itemObj, isCalc){
 
 //Ajax
 function markerPosition(latitude, longitude){
-    var data = {"current_lat":latitude, "current_lng":longitude};
+    var data = {"current_lat":latitude, "current_lng":longitude, "room_type": defaultRoomType};
 
     $.ajax({
         type: 'POST',
@@ -306,13 +320,15 @@ function markerPosition(latitude, longitude){
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(data),
         success: function(callback) {
+            minKey = callback.minKey;
             callback.resultList.forEach(function myFunction(item, index) {
                 var lat = item.latitude;
                 var lng = item.longitude;
                 var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-                var markerObj = addMarker(position, item.title, null);  //（position, title）
+                var markerObj = addMarker(position, item.title, null);  //（position, title)
                 addMarkerInfo(position, markerObj, item, true);
             });
+            google.maps.event.trigger(minMarker, 'click');
         },
         error: function() {
             console.log("error!");
@@ -446,4 +462,14 @@ function changeTravelMode(mode){
     }else{
         alert("請選擇目的地");
     }
+}
+
+//search by room type
+function searchByRoomType(roomType) {
+    defaultRoomType = roomType;
+    var current_lat = currentStart.lat();
+    var current_lng = currentStart.lng();
+    newMapObject(currentStart);
+    setStartPoint(currentStart);
+    markerPosition(current_lat, current_lng);
 }

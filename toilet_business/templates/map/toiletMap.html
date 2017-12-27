@@ -32,11 +32,19 @@
     <span>
         <button class="btn btn-success" onclick="changeTravelMode('DRIVING')">Driving</button>
         <button class="btn btn btn-info" onclick="changeTravelMode('WALKING')">Walking</button>
-        <!--<button class="btn btn-warning" onclick="changeTravelMode('BICYCLING')">Bicycling</button>-->
-        <!--<button class="btn btn btn-danger" onclick="changeTravelMode('TRANSIT')">Transit</button>-->
     </span>
 </div>
 
+<div class="form-group">
+    <span>
+        <button class="btn btn-success" onclick="searchByRoomType('rest')">REST</button>
+        <button class="btn btn btn-info" onclick="searchByRoomType('child')">CHILD</button>
+        <button class="btn btn btn-info" onclick="searchByRoomType('kindly')">KINDLY</button>
+        <button class="btn btn btn-info" onclick="searchByRoomType('ALL')">ALL</button>
+    </span>
+</div>
+
+<div id="minPath"></div>
 <div id="messageBlock">Go to >>>> <span id="msgInfo"></span></div>
 <div id="map" style="float:left;width:70%; height:100%"></div>
 <div id="directionsPanel" style="float:right;width:30%;height:100%"></div>
