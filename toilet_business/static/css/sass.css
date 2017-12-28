@@ -182,7 +182,7 @@
   }
 
   [class*="content"] [class*="titlehr"] {
-    width: 100%;
+    width: 180px;
     border-bottom: solid 5px;
     margin-left: 0%;
   }
