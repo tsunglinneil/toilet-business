@@ -11,14 +11,15 @@ today = datetime.today().strftime(time_form)
 
 def get_data(current_lat, current_lng, room_type, file_type):
     # init database
-    db = leveldb_util.init('toilet_db')
+    # db = leveldb_util.init('toilet_db')
+    db = None
 
     db_data = None
 
-    try:
-        db_data = leveldb_util.search(db, today)
-    except:
-        db_data = None
+    # try:
+    #     db_data = leveldb_util.search(db, today)
+    # except:
+    #     db_data = None
 
     if db_data is None:
         print("XML SEARCH")
@@ -60,7 +61,7 @@ def read_xml(db, current_lat, current_lng, room_type):
     min_key = ""
 
     # get xml file from websit
-    parse_data()
+    # parse_data()
 
     # when prefixes are used in the document, must be registered.
     xsi = "http://www.w3.org/2001/XMLSchema-instance"
@@ -114,8 +115,8 @@ def read_xml(db, current_lat, current_lng, room_type):
     if distance_list:
         min_key = min(distance_list.keys(), key=(lambda k: distance_list[k]))
 
-    db_str = str(db_list)
-    leveldb_util.insert(db, today, db_str)
+    # db_str = str(db_list)
+    # leveldb_util.insert(db, today, db_str)
 
     return result_list, min_key
 

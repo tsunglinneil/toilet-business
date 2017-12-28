@@ -331,10 +331,9 @@ function markerPosition(latitude, longitude){
             minKey = callback.minKey;
             resultList = callback.resultList;
 
-            console.log(resultList.length);
             if(resultList != null && resultList.length > 0) {
                 resultList.forEach(function myFunction(item, index) {
-                    console.log("翴:" + item.title + ", ね到:" + item.rest + ", 克:" + item.child + ", 禟み:" + item.kindly);
+                    // console.log("翴:" + item.title + ", ね到:" + item.rest + ", 克:" + item.child + ", 禟み:" + item.kindly);
                     var lat = item.latitude;
                     var lng = item.longitude;
                     var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
