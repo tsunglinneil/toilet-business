@@ -15,6 +15,7 @@ def get_data(db, current_lat, current_lng, room_type, file_type):
     try:
         db_data = leveldb_util.search(db, today)
     except:
+        print("DB NO DATA")
         db_data = None
 
     if db_data is None:
@@ -37,12 +38,12 @@ def read_db(db_data, current_lat, current_lng, room_type):
     min_key = ""
 
     for dict in data:
-        distance, dict = data_process(current_lat, current_lng, dict, room_type)
+        distance, copy_dict = data_process(current_lat, current_lng, dict, room_type)
 
-        if distance is not None and dict is not None:
-            key = "{},{}".format(dict["latitude"], dict["longitude"])
+        if distance is not None and copy_dict is not None:
+            key = "{},{}".format(copy_dict["latitude"], copy_dict["longitude"])
             distance_list[key] = distance
-            result_list.append(dict)
+            result_list.append(copy_dict)
 
     if distance_list:
         min_key = min(distance_list.keys(), key=(lambda k: distance_list[k]))
@@ -101,38 +102,41 @@ def read_xml(db, current_lat, current_lng, room_type):
 
         db_list.append(dict)
 
-        distance, dict = data_process(current_lat, current_lng, dict, room_type)
+        distance, copy_dict = data_process(current_lat, current_lng, dict, room_type)
 
-        if distance is not None and dict is not None:
-            key = "{},{}".format(dict["latitude"], dict["longitude"])
+        if distance is not None and copy_dict is not None:
+            key = "{},{}".format(copy_dict["latitude"], copy_dict["longitude"])
             distance_list[key] = distance
-            result_list.append(dict)
+            result_list.append(copy_dict)
 
     if distance_list:
         min_key = min(distance_list.keys(), key=(lambda k: distance_list[k]))
 
+    print(db)
     db_str = str(db_list)
     leveldb_util.insert(db, today, db_str)
+    print(leveldb_util.search(db, today))
 
     return result_list, min_key
 
 
 def data_process(current_lat, current_lng, dict, room_type):
+    copy_dict = dict.copy()
     calulate_data = {"current_lat": float(current_lat),
                      "current_lng": float(current_lng),
-                     "latitude": float(dict['latitude']),
-                     "longitude": float(dict['longitude'])}
+                     "latitude": float(copy_dict['latitude']),
+                     "longitude": float(copy_dict['longitude'])}
 
     distance = cal_distance(calulate_data)
 
-    if check_rule(distance, room_type, dict):
+    if check_rule(distance, room_type, copy_dict):
 
-        dict['rest'] = "是" if str(dict['rest']).upper() == 'Y' else "否"
-        dict['child'] = "是" if str(dict['child']).upper() == 'Y' else "否"
-        dict['kindly'] = "是" if str(dict['kindly']).upper() == 'Y' else "否"
-        dict['distance'] = distance
+        copy_dict['rest'] = "是" if str(dict['rest']).upper() == 'Y' else "否"
+        copy_dict['child'] = "是" if str(dict['child']).upper() == 'Y' else "否"
+        copy_dict['kindly'] = "是" if str(dict['kindly']).upper() == 'Y' else "否"
+        copy_dict['distance'] = distance
 
-        return distance, dict
+        return distance, copy_dict
 
     return None, None
 
@@ -179,7 +183,18 @@ def parse_data():
     return file
 
 
+def test(dict):
+    change = dict.copy()
+    change["A"] = "QQQQQQQ"
+    return change
+
 if __name__ == '__main__':
     # data = parseData()
     # print(data)
-    get_data(25.026158300000002,121.54270929999998,'ALL', 'xml')
+    # get_data(25.026158300000002,121.54270929999998,'ALL', 'xml')
+
+    dict = {"A":"AAA", "B":"BBB"}
+    print(dict)
+    new_dict = test(dict)
+    print(dict)
+    print(new_dict)
