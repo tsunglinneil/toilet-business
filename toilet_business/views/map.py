@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from toilet_business import file_util
-from toilet_business import leveldb_util
+from toilet_business import file_util, leveldb_util
 
 # About geopy:
 # geopy makes it easy for Python developers to locate the coordinates of addresses, cities, countries,
@@ -13,7 +12,6 @@ map_blueprint = Blueprint('map', __name__, url_prefix='/map')
 
 @map_blueprint.route('/', methods=['POST'])
 def map():
-    db = leveldb_util.init('toilet_db')
     return render_template('map/toiletMap.html')
 
 
@@ -24,7 +22,9 @@ def flaskmap():
 
 @map_blueprint.route('/flaskajax', methods=['POST'])
 def flask_ajax():
+    # init database
     db = leveldb_util.init('toilet_db')
+
     json = request.get_json()
     current_lat = json['current_lat']
     current_lng = json['current_lng']
@@ -37,7 +37,7 @@ def flask_ajax():
     #               {"position": "{}".format("25.055705,121.543832"), "title": "cafe"},
     #               {"position": "{}".format("25.055191,121.545222"), "title": "park"}]
 
-    result_list, min_key = file_util.get_data(current_lat, current_lng, room_type, 'xml')
+    result_list, min_key = file_util.get_data(db, current_lat, current_lng, room_type, 'xml')
 
     return jsonify(resultList=result_list, minKey=min_key)
 

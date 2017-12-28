@@ -9,17 +9,13 @@ import os, csv, requests
 time_form = "%Y-%m-%d"
 today = datetime.today().strftime(time_form)
 
-def get_data(current_lat, current_lng, room_type, file_type):
-    # init database
-    # db = leveldb_util.init('toilet_db')
-    db = None
-
+def get_data(db, current_lat, current_lng, room_type, file_type):
     db_data = None
 
-    # try:
-    #     db_data = leveldb_util.search(db, today)
-    # except:
-    #     db_data = None
+    try:
+        db_data = leveldb_util.search(db, today)
+    except:
+        db_data = None
 
     if db_data is None:
         print("XML SEARCH")
@@ -115,8 +111,8 @@ def read_xml(db, current_lat, current_lng, room_type):
     if distance_list:
         min_key = min(distance_list.keys(), key=(lambda k: distance_list[k]))
 
-    # db_str = str(db_list)
-    # leveldb_util.insert(db, today, db_str)
+    db_str = str(db_list)
+    leveldb_util.insert(db, today, db_str)
 
     return result_list, min_key
 
