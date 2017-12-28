@@ -3,3 +3,4 @@
 env/
 toilet_business/__pycache__/
 toilet_business/views/__pycache__/
+toilet_business/toilet_db/
