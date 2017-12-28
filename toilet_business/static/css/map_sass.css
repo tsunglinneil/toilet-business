@@ -167,6 +167,7 @@ html, body {
     letter-spacing: 2px;
     color: #A9E5BB;
     margin-left: 0%;
+    margin-bottom: -1%;
   }
 
   [class*="content"] h5 {
