@@ -159,6 +159,30 @@ $(function() {
         form.attr("method", "POST");
         form.submit();
     });
+
+    $("#roomTypeAll").click(function () {
+        searchByRoomType('ALL');
+    });
+
+    $("#roomTypeAccessible").click(function () {
+        searchByRoomType('rest');
+    });
+
+    $("#roomTypeChild").click(function () {
+        searchByRoomType('child');
+    });
+
+    $("#roomTypeKindly").click(function () {
+        searchByRoomType('kindly');
+    });
+
+    $("#travelDriving").click(function () {
+        changeTravelMode('DRIVING');
+    });
+
+    $("#travelWalking").click(function () {
+        changeTravelMode('WALKING');
+    });
 });
 
 function initSetting() {

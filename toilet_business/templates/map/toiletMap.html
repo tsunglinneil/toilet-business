@@ -7,7 +7,7 @@
 
 {% block styles %}
 {{super()}}
-<link href="{{url_for('static', filename='css/map.css')}}" rel="stylesheet">
+<link href="{{url_for('static', filename='css/map_sass.css')}}" rel="stylesheet">
 {% endblock styles %}
 
 {% block scripts %}
@@ -20,36 +20,79 @@
 
 {% block content %}
 {{super()}}
+<div class="header">
+    <h1>TOILET</h1><img class="icon" src="https://i.imgur.com/SV2lyg1.png"/>
+</div>
 
 <input type="hidden" id="travelMode" value="DRIVING" />
-<div class="form-group">
+<div class="content">
+    <h2>Topimap</h2>
+    <h3>Have a nice pee.</h3>
+    <div class="titlehr"></div>
     <input type="text" id="address" class="form-control" placeholder="Please enter area or street ..." />
-    <span>
-        <button class="btn btn-primary" id="specificSearch">Search</button>
-        <button class="btn btn-primary" id="currentSearch">Current Point</button>
-        <a href="{{ url_for('home.index') }}"><button class="btn btn-primary" id="home">Home</button></a>
-    </span>
+    <div class="button">
+        <div class="button_1">
+            <p id="specificSearch">Search</p>
+            <p id="currentSearch">Current Point</p>
+            <a href="{{ url_for('home.index') }}"><p id="home">Home</p></a>
+        </div>
+    </div>
+    <div id="minPath"></div>
+    <div id="messageBlock">Go to >>>> <span id="msgInfo"></span></div>
 </div>
-
-<div class="form-group">
-    <span>
-        <button class="btn btn btn-info" onclick="searchByRoomType('ALL')">All Type</button>
-        <button class="btn btn btn-info" onclick="searchByRoomType('rest')">Accessible</button>
-        <button class="btn btn btn-info" onclick="searchByRoomType('child')">Child</button>
-        <button class="btn btn btn-info" onclick="searchByRoomType('kindly')">Kindly</button>
-    </span>
+<div class="map" id="map"></div>
+<div id="directionsPanel" style="float:left;width:100%;height:auto;background-color: #FFEE77"></div>
+<div class="content">
+    <h4>Function</h4>
+    <div class="button">
+        <div class="button_2">
+            <div>
+                <p id="roomTypeAll">All Type</p>
+                <p id="roomTypeAccessible">Accessible</p>
+                <p id="roomTypeChild">Child</p>
+                <p id="roomTypeKindly">Kindly</p>
+            </div>
+        </div>
+        <div class="button_3">
+            <div>
+                <p id="travelDriving">Driving</p>
+                <p id="travelWalking">Walking</p>
+            </div>
+        </div>
+    </div>
+    <h5>Toliet&nbsp;B&nbsp;.inc</h5>
 </div>
-
-<div class="form-group">
-    <span>
-        <button class="btn btn-success" onclick="changeTravelMode('DRIVING')">Driving</button>
-        <button class="btn btn-success" onclick="changeTravelMode('WALKING')">Walking</button>
-    </span>
-</div>
-
-<div id="minPath"></div>
-<div id="messageBlock">Go to >>>> <span id="msgInfo"></span></div>
-<div id="map" style="float:left;width:100%; height:80%"></div>
-<div id="directionsPanel" style="float:left;width:100%;height:100%"></div>
 <form id="form" action="{{ url_for('map.map') }}" method="POST"></form>
+
+
+<!--<div class="form-group">-->
+    <!--<input type="text" id="address" class="form-control" placeholder="Please enter area or street ..." />-->
+    <!--<span>-->
+        <!--<button class="btn btn-primary" id="specificSearch">Search</button>-->
+        <!--<button class="btn btn-primary" id="currentSearch">Current Point</button>-->
+        <!--<a href="{{ url_for('home.index') }}"><button class="btn btn-primary" id="home">Home</button></a>-->
+    <!--</span>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+    <!--<span>-->
+        <!--<button class="btn btn btn-info" onclick="searchByRoomType('ALL')">All Type</button>-->
+        <!--<button class="btn btn btn-info" onclick="searchByRoomType('rest')">Accessible</button>-->
+        <!--<button class="btn btn btn-info" onclick="searchByRoomType('child')">Child</button>-->
+        <!--<button class="btn btn btn-info" onclick="searchByRoomType('kindly')">Kindly</button>-->
+    <!--</span>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+    <!--<span>-->
+        <!--<button class="btn btn-success" onclick="changeTravelMode('DRIVING')">Driving</button>-->
+        <!--<button class="btn btn-success" onclick="changeTravelMode('WALKING')">Walking</button>-->
+    <!--</span>-->
+<!--</div>-->
+
+<!--<div id="minPath"></div>-->
+<!--<div id="messageBlock">Go to >>>> <span id="msgInfo"></span></div>-->
+<!--<div id="map" style="float:left;width:100%; height:80%"></div>-->
+<!--<div id="directionsPanel" style="float:left;width:100%;height:100%"></div>-->
+<!--<form id="form" action="{{ url_for('map.map') }}" method="POST"></form>-->
 {% endblock %}
