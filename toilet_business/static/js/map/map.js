@@ -288,6 +288,13 @@ function addMarkerInfo(position, markerObj, itemObj, isCalc){
         minMarker = marker;
     }
 
+    //if there are any info window open, close it
+    if (oldinfowindow){
+        oldinfowindow.close();
+    }
+    oldinfowindow = infowindow;
+
+    infowindow.open(map, marker);
     //listener for click event
     marker.addListener('click', function() {
         //if there are any info window open, close it
@@ -320,15 +327,24 @@ function markerPosition(latitude, longitude){
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(data),
         success: function(callback) {
+            minMarker = null;
             minKey = callback.minKey;
-            callback.resultList.forEach(function myFunction(item, index) {
-                var lat = item.latitude;
-                var lng = item.longitude;
-                var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
-                var markerObj = addMarker(position, item.title, null);  //（position, title)
-                addMarkerInfo(position, markerObj, item, true);
-            });
-            google.maps.event.trigger(minMarker, 'click');
+            resultList = callback.resultList;
+
+            console.log(resultList.length);
+            if(resultList != null && resultList.length > 0) {
+                resultList.forEach(function myFunction(item, index) {
+                    console.log("地點:" + item.title + ", 友善:" + item.rest + ", 親子:" + item.child + ", 貼心:" + item.kindly);
+                    var lat = item.latitude;
+                    var lng = item.longitude;
+                    var position = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+                    var markerObj = addMarker(position, item.title, null);  //（position, title)
+                    addMarkerInfo(position, markerObj, item, true);
+                });
+                google.maps.event.trigger(minMarker, 'click');
+            }else{
+                alert("查無資訊");
+            }
         },
         error: function() {
             console.log("error!");
