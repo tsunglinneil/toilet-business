@@ -58,7 +58,7 @@ def read_xml(db, current_lat, current_lng, room_type):
     min_key = ""
 
     # get xml file from websit
-    # parse_data()
+    parse_data()
 
     # when prefixes are used in the document, must be registered.
     xsi = "http://www.w3.org/2001/XMLSchema-instance"
