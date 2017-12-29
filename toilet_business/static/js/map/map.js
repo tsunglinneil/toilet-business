@@ -195,6 +195,7 @@ function initSetting() {
 
     $("#messageBlock").hide();
     $("#minPath").hide();
+    $("#directionsPanel").empty();
     $("#directionsPanel").hide();
 
 
