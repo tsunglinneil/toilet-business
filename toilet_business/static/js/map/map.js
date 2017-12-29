@@ -478,6 +478,7 @@ function calcRoute(start, end, itemObj, mode) {
 
     directionsService.route(request, function(response, status) {
         if (status == 'OK') {
+            $("#directionsPanel").show();
             var route = response.routes[0].legs[0];
             directionsDisplay.setDirections(response);
 
