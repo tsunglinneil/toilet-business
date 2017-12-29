@@ -112,10 +112,8 @@ def read_xml(db, current_lat, current_lng, room_type):
     if distance_list:
         min_key = min(distance_list.keys(), key=(lambda k: distance_list[k]))
 
-    print(db)
     db_str = str(db_list)
     leveldb_util.insert(db, today, db_str)
-    print(leveldb_util.search(db, today))
 
     return result_list, min_key
 
