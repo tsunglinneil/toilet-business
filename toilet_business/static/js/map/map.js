@@ -495,8 +495,6 @@ function calcRoute(start, end, itemObj, mode) {
 
 //set travel mode
 function changeTravelMode(mode){
-    console.log("changeTravelMode :"+mode);
-    console.log("changeTravelMode :"+currentDestination);
     $("#travelMode").val(mode);
     if (currentDestination) {
         calcRoute(currentStart, currentDestination, currentToiletDetail, mode);
@@ -507,8 +505,7 @@ function changeTravelMode(mode){
 
 //search by room type
 function searchByRoomType(roomType) {
-    console.log("defaultRoomType :"+roomType);
-    console.log("currentStart :"+currentStart);
+    $("#directionsPanel").empty();
     currentDestination = null;
     defaultRoomType = roomType;
     var current_lat = currentStart.lat();
