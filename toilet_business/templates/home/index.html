@@ -1,7 +1,8 @@
 {# Use flask bootstrap base.html template inheritance #}
 {% extends "bootstrap/base.html"  %}
 
-{% block title %} Toilet Business {% endblock %}
+{% block head %}
+<title>Topimap</title>
 
 {% include '/common/header.html' %}
 
@@ -9,6 +10,8 @@
 {{super()}}
 <link href="{{url_for('static', filename='css/sass.css')}}" rel="stylesheet">
 {% endblock styles %}
+{% endblock head %}
+
 
 {% block scripts %}
 {{super()}}

@@ -1,14 +1,15 @@
 {# Use flask bootstrap base.html template inheritance #}
 {% extends "bootstrap/base.html"  %}
 
-{% block title %} Toilet Map - JS API {% endblock %}
-
+{% block head %}
+<title>Topimap</title>
 {% include '/common/header.html' %}
 
 {% block styles %}
 {{super()}}
 <link href="{{url_for('static', filename='css/map_sass.css')}}" rel="stylesheet">
 {% endblock styles %}
+{% endblock head %}
 
 {% block scripts %}
 {{super()}}
