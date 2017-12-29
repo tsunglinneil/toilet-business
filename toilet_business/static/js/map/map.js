@@ -391,7 +391,6 @@ function geocodeAddress(geocoder, resultsMap) {
             var current_lat = currentStart.lat();
             var current_lng = currentStart.lng();
 
-            // initSetting();
             //initial map for marker new position
             newMapObject(taipei);
 
