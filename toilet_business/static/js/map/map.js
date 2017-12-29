@@ -195,6 +195,8 @@ function initSetting() {
 
     $("#messageBlock").hide();
     $("#minPath").hide();
+    $("#directionsPanel").hide();
+
 
     //initial hidden
     $("#travelMode").val('DRIVING');
@@ -470,7 +472,7 @@ function calcRoute(start, end, itemObj, mode) {
         }
     };
 
-    $("#directionsPanel").empty();
+    $("#directionsPanel").hide();
     directionsDisplay.setMap(map);
     directionsDisplay.setPanel($("#directionsPanel")[0]);
 
@@ -505,7 +507,7 @@ function changeTravelMode(mode){
 
 //search by room type
 function searchByRoomType(roomType) {
-    $("#directionsPanel").empty();
+    $("#directionsPanel").hide();
     currentDestination = null;
     defaultRoomType = roomType;
     var current_lat = currentStart.lat();
