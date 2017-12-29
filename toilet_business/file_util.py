@@ -174,8 +174,10 @@ def cal_distance(data):
 def parse_data():
     URL = "http://www.dep-in.gov.taipei/epb/webservice/toilet.asmx/GetToiletData"
     response = requests.get(URL)
-    # print(response)
-    with open('static/datas/xml/TaipeiPublicToilet.xml', 'wb') as file:
+
+    this_folder = os.path.dirname(os.path.abspath(__file__))
+    my_file = os.path.join("{}/static/datas/xml".format(this_folder), 'TaipeiPublicToilet.xml')
+    with open(my_file, 'wb') as file:
         file.write(response.content)
 
     return file
