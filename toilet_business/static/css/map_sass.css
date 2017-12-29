@@ -208,7 +208,7 @@ html, body {
     margin-left: 0%;
   }
 
-  [class*="button"] [class*="button"] p {
+  [class*="content"] [class*="button"] p {
     display: inline;
     border-radius: 5px;
     background-color: #DB3A3E;

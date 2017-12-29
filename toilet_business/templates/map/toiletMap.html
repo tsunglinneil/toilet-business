@@ -32,8 +32,8 @@
     <input type="text" id="address" class="form-control" placeholder="Please enter area or street ..." />
     <div class="button">
         <div class="button_1">
-            <p id="specificSearch">Search</p>
-            <p id="currentSearch">Current Point</p>
+            <a id="specificSearch"><p>Search</p></a>
+            <a id="currentSearch"><p>Current Point</p></a>
             <a href="{{ url_for('home.index') }}"><p id="home">Home</p></a>
         </div>
     </div>
@@ -47,17 +47,15 @@
     <div class="button">
         <div class="button_2">
             <div>
-                <p id="roomTypeAll">All Type</p>
-                <p id="roomTypeAccessible">Accessible</p>
-                <p id="roomTypeChild">Child</p>
-                <p id="roomTypeKindly">Kindly</p>
+                <a id="roomTypeAll"><p>All Type</p></a>
+                <a id="roomTypeAccessible"><p>Accessible</p></a>
+                <a id="roomTypeChild"><p>Child</p></a>
+                <a id="roomTypeKindly"><p>Kindly</p></a>
             </div>
         </div>
         <div class="button_3">
-            <div>
-                <p id="travelDriving">Driving</p>
-                <p id="travelWalking">Walking</p>
-            </div>
+            <a id="travelDriving"><p>Driving</p></a>
+            <a id="travelWalking"><p>Walking</p></a>
         </div>
     </div>
     <h5>Toliet&nbsp;B&nbsp;.inc</h5>
