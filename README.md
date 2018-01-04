@@ -1,5 +1,5 @@
 # toilet-business
-The future
+The future by Lynn, Tracy, Ken
 
 ### Developer Tips:
 * Clone repository or download zip file directly
