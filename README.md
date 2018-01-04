@@ -1,5 +1,7 @@
 # toilet-business
-The future by Lynn, Tracy, Ken
+The future by Lynn, Tracy, Ken 
+ 
+Link:https://topimap.herokuapp.com/
 
 ### Developer Tips:
 * Clone repository or download zip file directly
@@ -65,3 +67,13 @@ The future by Lynn, Tracy, Ken
           
         /app.py (main)
         /requirement.txt (lists of packages to install)
+
+### Deploy with Heroku
+#### Need file Procfile:
+    web: gunicorn "toilet_business:create_app()"
+    
+    Note. "toilet_business:create_app()" meaning: 
+        from toilet_business import create_app
+
+
+    
