@@ -1,5 +1,5 @@
 # toilet-business
-The future by Lynn, Tracy, Ken 
+The future by Lynn, Tracy,  
  
 Link:https://topimap.herokuapp.com/
 
